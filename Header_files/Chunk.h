@@ -1,6 +1,8 @@
 #ifndef CHUNK_H__
 #define CHUNK_H__
 
-#include <iostream>
+class Chunk{
+    
+}
 
 #endif
