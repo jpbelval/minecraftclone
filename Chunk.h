@@ -3,6 +3,6 @@
 
 class Chunk{
     
-}
+};
 
 #endif

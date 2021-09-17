@@ -1,6 +1,8 @@
 #ifndef BLOCKARRAY3D_H__
 #define BLOCKARRAY3D_H__
 
+#include "define.h"
+
 class BlockArray3d {
     protected:
         int* m_blocks;

@@ -5,6 +5,6 @@
 #define CHUNK_SIZE_Y 128
 #define CHUNK_SIZE_Z 16
 
-enum BlockType = {BTYPE_AIR, BTYPE_DIRT_, BTYPE_GRASS}
+enum BlockType {BTYPE_AIR, BTYPE_DIRT_, BTYPE_GRASS};
 
 #endif
