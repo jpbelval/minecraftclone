@@ -7,10 +7,12 @@ BlockArray3d::BlockArray3d(int x, int y, int z){
     m_z = z;
     m_blocks = new BlockType[m_x * m_y * m_z];
     Reset(BTYPE_AIR);
+    std::cout << "ctor blockarray3d" << std::endl;
 }
 
 BlockArray3d::~BlockArray3d(){
     delete[] m_blocks;
+    std::cout << "dtor blockarray3d" << std::endl;
 }
 
 BlockArray3d::BlockArray3d(const BlockArray3d& blockArrayOrigin){
