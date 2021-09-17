@@ -1,5 +1,5 @@
 #include <iostream>
-#include "BlockInfo.h"
+#include "blockInfo.h"
 #include <string>
 
 BlockInfo::BlockInfo(BlockType type, const std::string& name) : m_type(type), m_nom(name)
