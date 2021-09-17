@@ -28,6 +28,11 @@ int main()
     std::cout << "\033[4m Set Block \033[0m" << std::endl;
     blockArray1.Set(0,1,0, BTYPE_AIR);
     std::cout << blockArray1.Get(0,1,0) << std::endl;
+    std::cout << "\033[4m Test copie \033[0m" << std::endl;
+    BlockArray3d blockArray2(blockArray1);
+    blockArray1.Set(0,1,0, BTYPE_GRASS);
+    std::cout << blockArray1.Get(0,1,0) << std::endl;
+    std::cout << blockArray2.Get(0,1,0) << std::endl;
     std::cout << "--------------------" << std::endl;
 
     //Tests Chunk
