@@ -5,15 +5,14 @@
 
 class BlockArray3d {
     protected:
-        int* m_blocks;
+        BlockType* m_blocks;
+        int m_x;
+        int m_y;
+        int m_z;
     public:
-        BlockArray3d(int x, int y, int z){
-            m_blocks = new int[x * y * z];
-        };
+        BlockArray3d(int x, int y, int z);
 
-        ~BlockArray3d(){
-            delete m_blocks;
-        };
+        ~BlockArray3d();
 
         BlockArray3d(const BlockArray3d& blockArrayOrigin);
 

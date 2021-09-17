@@ -3,7 +3,7 @@
 
 int main()
 {
-    BlockInfo bi1(BTYPE_DIRT_, "Terre");
-
-    bi1.Show();
+    BlockInfo blockInfo1(BTYPE_DIRT_, "Terre");
+    blockInfo1.SetDurability(52);
+    blockInfo1.Show();
 }
