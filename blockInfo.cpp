@@ -15,12 +15,12 @@ void BlockInfo::SetDurability(const int durability)
 {
     m_durability = durability;
 }
-const int BlockInfo::GetDurability()
+int BlockInfo::GetDurability() const
 {
     return m_durability;
 }
 
-const BlockInfo::Show()
+void BlockInfo::Show() const
 {
     std::cout << "nom: " << m_nom << std::endl;
     std::cout << "type: " << m_type << std::endl;
