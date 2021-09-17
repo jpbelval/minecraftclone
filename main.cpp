@@ -1,5 +1,5 @@
 #include <iostream>
-#include  "blockInfo.h"
+#include  "blockinfo.h"
 
 int main()
 {
