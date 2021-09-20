@@ -20,6 +20,9 @@ BlockArray3d::BlockArray3d(const BlockArray3d& blockArrayOrigin){
     m_y = blockArrayOrigin.m_y;
     m_z = blockArrayOrigin.m_z;
     m_blocks = new BlockType[m_x * m_y * m_z];
+    for (unsigned int i = 0; i < m_x * m_y * m_z; i++)
+        m_blocks[i] = blockArrayOrigin.m_blocks[i];
+    
 }
 
 BlockType BlockArray3d::Get(int x, int y, int z) const{
