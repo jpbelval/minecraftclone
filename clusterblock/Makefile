@@ -1,6 +1,6 @@
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-BINFILE = ./clusterblock
+BINFILE = ./build/clusterblock
 CC = g++
 
 COMPILER_FLAGS = -I/usr/X11R6/include -I/usr/local/include -I./external/noise/include -I./external/enet-1.3.1/include -finline-functions -std=c++11
