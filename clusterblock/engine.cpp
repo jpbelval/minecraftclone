@@ -97,25 +97,125 @@ void Engine::Render(float elapsedTime)
         facteur -= 0.01f * elapsedTime;
     t.ApplyScale(facteur, facteur, facteur);
     t.Use();
-
+//===============================================================
     glBegin(GL_QUADS);
     glNormal3f(0, 0, 1);
 
     glTexCoord2f(0, 0);
-    glVertex3f(-1.f, -1.f, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(1.f, -1.f, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(1.f, 1.f, 0);
+    glVertex3f(0.5f, 0.5f, 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(-1.f, 1.f, 0);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(1, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, 0.5f, 0.5f);
+    glEnd();
+//================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+//===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
     
     glEnd();
 
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
 
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+    
+    glEnd();
 }
 
 void Engine::KeyPressEvent(unsigned char key)
