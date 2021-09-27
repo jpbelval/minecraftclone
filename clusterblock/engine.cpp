@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "transformation.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -48,6 +49,7 @@ void Engine::DeInit()
 void Engine::LoadResource()
 {
     LoadTexture(m_textureFloor, TEXTURE_PATH "checker.png");
+    LoadTexture(m_textureCube, TEXTURE_PATH "textureBlock.jpg");
 }
 
 void Engine::UnloadResource()
@@ -81,6 +83,39 @@ void Engine::Render(float elapsedTime)
     glTexCoord2f(0, nbRep);
     glVertex3f(-100.f, -2.f, -100.f);
     glEnd();
+
+    //Quad
+    m_textureCube.Bind();
+    Transformation t;
+    t.ApplyTranslation(0,0,-5.f);
+    t.ApplyTranslation(sin(gameTime), 0, 0);
+    t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
+    t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
+
+    static float facteur = 1.f;
+    if (facteur > 0)
+        facteur -= 0.01f * elapsedTime;
+    t.ApplyScale(facteur, facteur, facteur);
+    t.Use();
+
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-1.f, -1.f, 0);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(1.f, -1.f, 0);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(1.f, 1.f, 0);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-1.f, 1.f, 0);
+    
+    glEnd();
+
+
 }
 
 void Engine::KeyPressEvent(unsigned char key)
@@ -114,9 +149,9 @@ void Engine::KeyReleaseEvent(unsigned char key)
 
 void Engine::MouseMoveEvent(int x, int y)
 {
-    // Centrer la souris seulement si elle n'est pas déjà centrée
-    // Il est nécessaire de faire la vérification pour éviter de tomber
-    // dans une boucle infinie où l'appel à CenterMouse génère un
+    // Centrer la souris seulement si elle n'est pas dï¿½jï¿½ centrï¿½e
+    // Il est nï¿½cessaire de faire la vï¿½rification pour ï¿½viter de tomber
+    // dans une boucle infinie oï¿½ l'appel ï¿½ CenterMouse gï¿½nï¿½re un
     // MouseMoveEvent, qui rapelle CenterMouse qui rapelle un autre
     // MouseMoveEvent, etc
     if(x == (Width() / 2) && y == (Height() / 2))

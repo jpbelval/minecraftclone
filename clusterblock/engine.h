@@ -27,6 +27,7 @@ private:
     bool m_wireframe = false;
 
     Texture m_textureFloor;
+    Texture m_textureCube;
 
     bool m_keyW = false;
     bool m_keyA = false;
