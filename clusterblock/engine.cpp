@@ -91,12 +91,8 @@ void Engine::Render(float elapsedTime)
     t.ApplyTranslation(sin(gameTime), 0, 0);
     t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
     t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
-
-    static float facteur = 1.f;
-    if (facteur > 0)
-        facteur -= 0.01f * elapsedTime;
-    t.ApplyScale(facteur, facteur, facteur);
     t.Use();
+
 //===============================================================
     glBegin(GL_QUADS);
     glNormal3f(0, 0, 1);
@@ -131,7 +127,7 @@ void Engine::Render(float elapsedTime)
     glEnd();
 //================================================================
     glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
+    glNormal3f(0, 0, -1);
 
     glTexCoord2f(0, 0);
     glVertex3f(0.5f, -0.5f, -0.5f);
@@ -148,7 +144,7 @@ void Engine::Render(float elapsedTime)
     glEnd();
 //=================================================================
     glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
+    glNormal3f(-1, 0, 0);
 
     glTexCoord2f(0, 0);
     glVertex3f(-0.5f, -0.5f, -0.5f);
@@ -163,27 +159,10 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-0.5f, 0.5f, -0.5f);
     
     glEnd();
-//===================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
-    
-    glEnd();
 
     //===================================================================
     glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
+    glNormal3f(0, 1, 0);
 
     glTexCoord2f(0, 0);
     glVertex3f(-0.5f, 0.5f, 0.5f);
@@ -201,7 +180,7 @@ void Engine::Render(float elapsedTime)
 
     //===================================================================
     glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
+    glNormal3f(0, -1, 0);
 
     glTexCoord2f(0, 0);
     glVertex3f(-0.5f, -0.5f, 0.5f);
