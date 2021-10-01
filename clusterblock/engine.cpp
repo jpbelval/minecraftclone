@@ -1,11 +1,13 @@
 #include "engine.h"
 #include "transformation.h"
+#include "player.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 
 Engine::Engine()
 {
+    m_player();
 }
 
 Engine::~Engine()
@@ -67,6 +69,7 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
 
     // Plancher
     // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
@@ -195,6 +198,7 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-0.5f, -0.5f, -0.5f);
     
     glEnd();
+
 }
 
 void Engine::KeyPressEvent(unsigned char key)
@@ -207,6 +211,17 @@ void Engine::KeyPressEvent(unsigned char key)
         case 94: // F10
             SetFullscreen(!IsFullscreen());
             break;
+        case 22: // W
+            m_keyW = true;
+            break;
+        case 0:  // A
+            m_keyA = true;
+            break;
+        case 18: // S
+            m_keyS = true;
+            break;
+        case 3:  // D
+            m_keyD = true;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
     }
@@ -222,6 +237,18 @@ void Engine::KeyReleaseEvent(unsigned char key)
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             else
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+        case 22: // W
+            m_keyW = false;
+            break;
+        case 0:  // A
+            m_keyA = false;
+            break;
+        case 18: // S
+            m_keyS = false;
+            break;
+        case 3:  // D
+            m_keyD = false;
             break;
     }
 }
