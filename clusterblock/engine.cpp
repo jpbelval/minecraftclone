@@ -69,6 +69,10 @@ void Engine::Render(float elapsedTime)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
+    //Player
+    Transformation t;
+    m_player.ApplyTransformation(t);
+    t.Use();
 
     // Plancher
     // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
@@ -86,9 +90,9 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-100.f, -2.f, -100.f);
     glEnd();
 
-    //Quad
+
+    //Cube
     m_textureCube.Bind();
-    Transformation t;
     t.ApplyTranslation(0,0,-5.f);
     t.ApplyTranslation(sin(gameTime), 0, 0);
     t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
