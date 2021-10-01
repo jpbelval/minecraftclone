@@ -1,9 +1,10 @@
-
 #include "player.h"
 
-Player::Player(const Vector3f& position , float rotX = 0, float rotY = 0) : m_Position(position), m_RotX(rotX), m_RotY(rotY)
+Player::Player(const Vector3f& position, float rotX, float rotY) : m_RotX(rotX), m_RotY(rotY)
 {
-
+    m_Position.x = position.x;
+    m_Position.y = position.y;
+    m_Position.z = position.z;
 }
 
 

@@ -152,7 +152,7 @@ void OpenglContext::ShowCrossCursor() const
 
 void OpenglContext::InitWindow(int width, int height)
 {
-    m_app.create(sf::VideoMode(width, height, 32), m_title.c_str(), m_fullscreen ? sf::Style::Fullscreen : (sf::Style::Resize|sf::Style::Close), sf::ContextSettings(32, 8, 0));
+    m_app.create((m_fullscreen ? sf::VideoMode::getFullscreenModes()[0] : sf::VideoMode(width, height, 32)), m_title.c_str(), m_fullscreen ? sf::Style::Fullscreen : (sf::Style::Resize|sf::Style::Close), sf::ContextSettings(32, 8, 0));
 }
 
 OpenglContext::MOUSE_BUTTON OpenglContext::ConvertMouseButton(sf::Mouse::Button button) const
