@@ -52,5 +52,7 @@ void Player::Move(bool front , bool back , bool left , bool right , float elapse
 }
 
 void Player::ApplyTransformation(Transformation& transformation) const{
-
+    transformation.ApplyRotation(-m_RotX , 1.f, 0, 0);
+    transformation.ApplyRotation(-m_RotY , 0, 1.f, 0);
+    transformation.ApplyTranslation(-m_Position);
 }
