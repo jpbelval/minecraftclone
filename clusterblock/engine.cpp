@@ -5,9 +5,8 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine()
+Engine::Engine() : m_player(Vector3f(0,0,-5.f))
 {
-    m_player();
 }
 
 Engine::~Engine()
@@ -222,6 +221,7 @@ void Engine::KeyPressEvent(unsigned char key)
             break;
         case 3:  // D
             m_keyD = true;
+            break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
     }
