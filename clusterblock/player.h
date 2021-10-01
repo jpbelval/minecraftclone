@@ -10,10 +10,12 @@ private:
     Vector3f m_Position;
     float m_RotX;
     float m_RotY;
+    bool m_isFly;
 public:
     Player(const Vector3f& position , float rotX = 0, float rotY = 0);
     ~Player();
 
+    void ToggleisFly();
     void TurnLeftRight(float value);
     void TurnTopBottom(float value);
     void Move(bool front , bool back , bool left , bool right , float elapsedTime);

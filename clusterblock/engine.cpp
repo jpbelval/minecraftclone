@@ -226,6 +226,9 @@ void Engine::KeyPressEvent(unsigned char key)
         case 3:  // D
             m_keyD = true;
             break;
+        case 5: //F
+            m_player.ToggleisFly();
+            break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
     }
@@ -264,8 +267,21 @@ void Engine::MouseMoveEvent(int x, int y)
     // dans une boucle infinie o� l'appel � CenterMouse g�n�re un
     // MouseMoveEvent, qui rapelle CenterMouse qui rapelle un autre
     // MouseMoveEvent, etc
+
     if(x == (Width() / 2) && y == (Height() / 2))
         return;
+    if(x < Width() / 2){
+        m_player.TurnLeftRight(-0.2);
+    }
+    if(x > Width() / 2){
+        m_player.TurnLeftRight(0.2);
+    }
+    if(y > Height() / 2){
+        m_player.TurnTopBottom(0.2);
+    }
+    if(y < Height() / 2){
+        m_player.TurnTopBottom(-0.2);
+    }
 
     CenterMouse();
 }
