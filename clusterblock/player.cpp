@@ -13,11 +13,11 @@ Player::~Player(){
 }
 
 void Player::TurnLeftRight(float value){
-
+    m_RotX += value;
 }
 
 void Player::TurnTopBottom(float value){
-
+    m_RotY += value;
 }
 
 void Player::Move(bool front , bool back , bool left , bool right , float elapsedTime){
@@ -26,8 +26,8 @@ void Player::Move(bool front , bool back , bool left , bool right , float elapse
         yrotrad = (m_RotY / 180 * 3.141592654f);
         xrotrad = (m_RotX / 180 * 3.141592654f);
         m_Position.x += float(sin(yrotrad));
-        m_Position.y += float(sin(xrotrad));
-        m_Position.z += float(sin(yrotrad));
+        m_Position.y -= float(sin(xrotrad));
+        m_Position.z -= float(cos(yrotrad));
     }
     else if(back){
         float xrotrad, yrotrad;
@@ -43,7 +43,7 @@ void Player::Move(bool front , bool back , bool left , bool right , float elapse
         m_Position.x += float(cos(yrotrad)) * 0.2;
         m_Position.z += float(sin(yrotrad)) * 0.2;
     }
-    else if(right){
+    else if(left){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
         m_Position.x -= float(cos(yrotrad)) * 0.2;
