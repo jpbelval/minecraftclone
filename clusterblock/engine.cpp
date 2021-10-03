@@ -272,15 +272,19 @@ void Engine::MouseMoveEvent(int x, int y)
         return;
     if(x < Width() / 2){
         m_player.TurnLeftRight(-0.2);
+        std::cout << "left" << std::endl;
     }
     if(x > Width() / 2){
         m_player.TurnLeftRight(0.2);
+        std::cout << "right" << std::endl;
     }
     if(y > Height() / 2){
         m_player.TurnTopBottom(0.2);
+        std::cout << "back" << std::endl;
     }
     if(y < Height() / 2){
         m_player.TurnTopBottom(-0.2);
+        std::cout << "front" << std::endl;
     }
 
     CenterMouse();

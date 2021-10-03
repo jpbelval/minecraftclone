@@ -25,6 +25,10 @@ void Player::TurnLeftRight(float value){
 
 void Player::TurnTopBottom(float value){
     m_RotX += value;
+    if(m_RotX > 90)
+        m_RotX = 90;
+    if(m_RotX < -90)
+        m_RotX = -90;
 }
 
 void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime){
@@ -45,7 +49,7 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
             xrotrad = (m_RotX / 180 * 3.141592654f);
             m_Position.y -= float(sin(xrotrad));
         }
-        
+    
     }
     else if(back){
         float yrotrad;
