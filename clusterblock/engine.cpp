@@ -95,7 +95,7 @@ void Engine::Render(float elapsedTime)
     //Cube
     m_textureCube.Bind();
     t.ApplyTranslation(0,0,-5.f);
-    t.ApplyTranslation(sin(gameTime), 0, 0);
+    t.ApplyTranslation(sin(gameTime), 0, -2);
     t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
     t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
     t.Use();
