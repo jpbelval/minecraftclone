@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(const Vector3f& position, float rotX, float rotY) : m_RotX(rotX), m_RotY(rotY), m_isFly(false)
+Player::Player(const Vector3f& position, float rotX, float rotY) : m_RotX(rotX), m_RotY(rotY), m_isFly(false), m_isFalling(false)
 {
     m_Position.x = position.x;
     m_Position.y = position.y;
@@ -15,8 +15,17 @@ Player::~Player(){
 
 void Player::ToggleisFly(){
     if(m_isFly)
-        m_Position.y = 0;
+        m_isFalling = true;
+    else
+        m_isFalling = false;
     m_isFly = !m_isFly;
+}
+
+void Player::CheckFallState(){
+    if(m_isFalling && m_Position.y > 0){
+        m_Position.y -= FALLSPEED;
+
+    }
 }
 
 void Player::TurnLeftRight(float value){

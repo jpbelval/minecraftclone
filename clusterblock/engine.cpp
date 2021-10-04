@@ -69,6 +69,7 @@ void Engine::Render(float elapsedTime)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
+    m_player.CheckFallState();
     //Player
     Transformation t;
     m_player.ApplyTransformation(t);
@@ -90,7 +91,7 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-100.f, -2.f, -100.f);
     glEnd();
 
-
+    
     //Cube
     m_textureCube.Bind();
     t.ApplyTranslation(0,0,-5.f);
@@ -270,23 +271,10 @@ void Engine::MouseMoveEvent(int x, int y)
 
     if(x == (Width() / 2) && y == (Height() / 2))
         return;
-    if(x < Width() / 2){
-        m_player.TurnLeftRight(-0.2);
-        std::cout << "left" << std::endl;
-    }
-    if(x > Width() / 2){
-        m_player.TurnLeftRight(0.2);
-        std::cout << "right" << std::endl;
-    }
-    if(y > Height() / 2){
-        m_player.TurnTopBottom(0.2);
-        std::cout << "back" << std::endl;
-    }
-    if(y < Height() / 2){
-        m_player.TurnTopBottom(-0.2);
-        std::cout << "front" << std::endl;
-    }
 
+    MakeRelativeToCenter(x,y);
+    m_player.TurnLeftRight(x * 0.05);
+    m_player.TurnTopBottom(y * 0.05);
     CenterMouse();
 }
 

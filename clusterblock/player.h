@@ -11,11 +11,14 @@ private:
     float m_RotX;
     float m_RotY;
     bool m_isFly;
+    bool m_isFalling;
+
 public:
     Player(const Vector3f& position , float rotX = 0, float rotY = 0);
     ~Player();
 
     void ToggleisFly();
+    void CheckFallState();
     void TurnLeftRight(float value);
     void TurnTopBottom(float value);
     void Move(bool front , bool back , bool left , bool right , float elapsedTime);
