@@ -51,7 +51,7 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
         }
     
     }
-    else if(back){
+    if(back){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);        
         m_Position.x -= float(sin(yrotrad))* elapsedTime * vitesse;
@@ -64,13 +64,14 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
             m_Position.y += float(sin(xrotrad))* elapsedTime * vitesse;
         }
     }
-    else if(right){
+
+    if(right){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
-        m_Position.x += float(cos(yrotrad)) * 0.2;
+        m_Position.x += float(cos(yrotrad)) * elapsedTime * vitesse;
         m_Position.z += float(sin(yrotrad)) * elapsedTime * vitesse;
     }
-    else if(left){
+    if(left){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
         m_Position.x -= float(cos(yrotrad)) * elapsedTime * vitesse;
