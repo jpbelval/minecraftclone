@@ -1,3 +1,0 @@
-* Ajouter la possibilité de plusieurs touches en même temps w + d ou w + a
-* Fix le max de rotation de souris
-** Ajouter skybox
