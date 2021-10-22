@@ -15,10 +15,15 @@ Engine::~Engine()
 
 void Engine::Init()
 {
+    GLenum glewErr = glewInit();
+    if(glewErr != GLEW_OK)
+    {
+        std::cerr << "ERREUR GLEW: " << glewGetErrorString(glewErr) << std::endl;
+        abort();
+    }
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_CULL_FACE);
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0f, (float)Width() / (float)Height(), 0.0001f, 1000.0f);
