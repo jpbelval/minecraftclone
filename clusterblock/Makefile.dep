@@ -1,9 +1,12 @@
-engine.o: engine.cpp engine.h define.h openglcontext.h texture.h
+engine.o: engine.cpp engine.h define.h openglcontext.h texture.h player.h \
+ vector3.h transformation.h matrix4.h
 openglcontext.o: openglcontext.cpp openglcontext.h define.h
 texture.o: texture.cpp texture.h define.h
+player.o: player.cpp player.h vector3.h transformation.h matrix4.h \
+ define.h
 transformation.o: transformation.cpp transformation.h matrix4.h define.h \
  vector3.h
-chunk.o: chunk.cpp chunk.h blockarray3d.h define.h
+chunk.o: chunk.cpp chunk.h array3d.h define.h
 blockinfo.o: blockinfo.cpp blockinfo.h define.h
-blockarray3d.o: blockarray3d.cpp blockarray3d.h define.h
-main.o: main.cpp engine.h define.h openglcontext.h texture.h
+main.o: main.cpp engine.h define.h openglcontext.h texture.h player.h \
+ vector3.h transformation.h matrix4.h
