@@ -23,7 +23,7 @@ void Engine::Init()
     }
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
-    glEnable(GL_CULL_FACE);
+    // glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0f, (float)Width() / (float)Height(), 0.0001f, 1000.0f);
@@ -55,6 +55,12 @@ void Engine::DeInit()
 
 void Engine::LoadResource()
 {
+    std::cout << "Loading and compiling shaders ..." << std::endl;
+    if(!m_shader01.Load(SHADER_PATH "shader01.vert", SHADER_PATH "shader01.frag", true))
+    {
+        std::cout << "Failed to load shader" << std::endl;
+        exit (1);
+    }
     LoadTexture(m_textureFloor, TEXTURE_PATH "checker.png");
     LoadTexture(m_textureCube, TEXTURE_PATH "textureBlock.jpg");
 }
@@ -98,117 +104,11 @@ void Engine::Render(float elapsedTime)
     glEnd();
 
     
-    //Cube
-    m_textureCube.Bind();
-    t.ApplyTranslation(0,0,-5.f);
-    t.ApplyTranslation(sin(gameTime), 0, -2);
-    t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
-    t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
-    t.Use();
-
-//===============================================================
-    glBegin(GL_QUADS);
-    glNormal3f(0, 0, 1);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, 0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-    glEnd();
-//=================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(1, 0, 0);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(0.5f, 0.5f, 0.5f);
-    glEnd();
-//================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(0, 0, -1);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
-    
-    glEnd();
-//=================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(-1, 0, 0);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
-    
-    glEnd();
-
-    //===================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(0, 1, 0);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(0.5f, 0.5f, 0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
-    
-    glEnd();
-
-    //===================================================================
-    glBegin(GL_QUADS);
-    glNormal3f(0, -1, 0);
-
-    glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
-
-    glTexCoord2f(0, 1);
-    glVertex3f(0.5f, -0.5f, -0.5f);
-    
-    glEnd();
-
+    if(m_testChunk.IsDirty ())
+        m_testChunk.Update ();
+    m_shader01.Use();
+    m_testChunk.Render ();
+    Shader::Disable ();
 }
 
 void Engine::KeyPressEvent(unsigned char key)

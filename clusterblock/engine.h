@@ -4,6 +4,8 @@
 #include "openglcontext.h"
 #include "texture.h"
 #include "player.h"
+#include "shader.h"
+#include "chunk.h"
 
 class Engine : public OpenglContext
 {
@@ -29,6 +31,10 @@ private:
 
     Texture m_textureFloor;
     Texture m_textureCube;
+
+    Shader m_shader01;
+
+    Chunk m_testChunk;
     
     Player m_player;
 

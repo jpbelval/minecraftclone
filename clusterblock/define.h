@@ -13,6 +13,7 @@
 #include <GL/glew.h>
 #endif
 
+#define SHADER_PATH "../clusterblock/media/shaders/"
 #define CHUNK_SIZE_X 16
 #define CHUNK_SIZE_Y 128
 #define CHUNK_SIZE_Z 16
