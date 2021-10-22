@@ -33,6 +33,8 @@ void Engine::Init()
     glEnable(GL_LIGHTING);
     glEnable(GL_LINE_SMOOTH);
 
+    glEnable(GL_CULL_FACE);
+
     // Light
     GLfloat light0Pos[4] = { 0.0f, CHUNK_SIZE_Y, 0.0f, 1.0f };
     GLfloat light0Amb[4] = { 0.9f, 0.9f, 0.9f, 1.0f };
