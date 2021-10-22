@@ -1,6 +1,7 @@
 #ifndef DEFINE_H__
 #define DEFINE_H__
 
+#include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -17,7 +18,8 @@
 #define CHUNK_SIZE_Z 16
 #define FALLSPEED 0.4f
 
-enum BlockType {BTYPE_AIR, BTYPE_DIRT, BTYPE_GRASS};
+typedef uint8_t BlockType;
+enum BLOCK_TYPE {BTYPE_AIR, BTYPE_DIRT, BTYPE_GRASS};
 
 
 #define TEXTURE_PATH        "../clusterblock/media/textures/"
