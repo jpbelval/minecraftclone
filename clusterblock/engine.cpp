@@ -17,6 +17,7 @@ void Engine::Init()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_CULL_FACE);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -190,16 +191,16 @@ void Engine::Render(float elapsedTime)
     glNormal3f(0, -1, 0);
 
     glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
-
-    glTexCoord2f(1, 0);
     glVertex3f(0.5f, -0.5f, 0.5f);
 
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
     glTexCoord2f(1, 1);
-    glVertex3f(0.5f, -0.5f, -0.5f);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(0.5f, -0.5f, -0.5f);
     
     glEnd();
 
