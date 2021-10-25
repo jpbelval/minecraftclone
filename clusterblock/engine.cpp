@@ -96,13 +96,13 @@ void Engine::Render(float elapsedTime)
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0); // Normal vector
     glTexCoord2f(0, 0);
-    glVertex3f(-100.f, -2.f, 100.f);
+    glVertex3f(-50.f, -2.f, 50.f);
     glTexCoord2f(nbRep, 0);
-    glVertex3f(100.f, -2.f, 100.f);
+    glVertex3f(50.f, -2.f, 50.f);
     glTexCoord2f(nbRep, nbRep);
-    glVertex3f(100.f, -2.f, -100.f);
+    glVertex3f(50.f, -2.f, -50.f);
     glTexCoord2f(0, nbRep);
-    glVertex3f(-100.f, -2.f, -100.f);
+    glVertex3f(-50.f, -2.f, -50.f);
     glEnd();
 
     
