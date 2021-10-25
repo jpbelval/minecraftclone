@@ -31,6 +31,7 @@ private:
 
     Texture m_textureFloor;
     Texture m_textureCube;
+    Texture m_textureGrass;
 
     Shader m_shader01;
 

@@ -64,6 +64,7 @@ void Engine::LoadResource()
         exit (1);
     }
     LoadTexture(m_textureFloor, TEXTURE_PATH "checker.png");
+    LoadTexture(m_textureGrass, TEXTURE_PATH "textureFloor.png");
     LoadTexture(m_textureCube, TEXTURE_PATH "textureBlock.jpg");
 }
 
@@ -91,7 +92,7 @@ void Engine::Render(float elapsedTime)
 
     // Plancher
     // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
-    m_textureFloor.Bind();
+    m_textureGrass.Bind();
     float nbRep = 50.f;
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0); // Normal vector
@@ -105,11 +106,11 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-50.f, -2.f, -50.f);
     glEnd();
 
-    
+    m_textureCube.Bind();
     if(m_testChunk.IsDirty ())
         m_testChunk.Update ();
     m_shader01.Use();
-    m_testChunk.Render ();
+    m_testChunk.Render();
     Shader::Disable ();
 }
 
