@@ -21,7 +21,7 @@
 #define JUMP_HEIGHT 1
 
 typedef uint8_t BlockType;
-enum BLOCK_TYPE {BTYPE_AIR, BTYPE_DIRT, BTYPE_GRASS};
+enum BLOCK_TYPE {BTYPE_AIR, BTYPE_DIRT, BTYPE_GRASS, BTYPE_PLANK, BTYPE_COBBLE, BTYPE_LAST};
 
 
 #define TEXTURE_PATH        "../clusterblock/media/textures/"

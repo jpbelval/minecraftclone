@@ -5,7 +5,8 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,0,-5.f))
+Engine::Engine() : m_player(Vector3f(0,0,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+                   Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche") 
 {
 }
 
@@ -63,11 +64,32 @@ void Engine::LoadResource()
         std::cout << "Failed to load shader" << std::endl;
         exit (1);
     }
-    LoadTexture(m_textureFloor, TEXTURE_PATH "checker.png");
-    LoadTexture(m_textureGrass, TEXTURE_PATH "textureFloor.png");
-    LoadTexture(m_textureCube, TEXTURE_PATH "textureBlock.jpg");
+
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
+
+    TextureAtlas :: TextureIndex texPlanche = m_textureAtlas.AddTexture(TEXTURE_PATH "Planche.jpg");
+    m_textureAtlas.TextureIndexToCoord(texPlanche, u, v, w, h);
+    m_BlockInfo[BTYPE_PLANK] = new BlockInfo(BTYPE_PLANK, "Planche");
+    m_BlockInfo[BTYPE_PLANK] ->SetWHUV(w,h,u,v);
+    TextureAtlas :: TextureIndex texTerre = m_textureAtlas.AddTexture(TEXTURE_PATH "textureTerre.jpg");
+    m_textureAtlas.TextureIndexToCoord(texTerre, u, v, w, h);
+    m_BlockInfo[BTYPE_DIRT] = new BlockInfo(BTYPE_DIRT, "Terre");
+    m_BlockInfo[BTYPE_DIRT] ->SetWHUV(w,h,u,v);
+    TextureAtlas :: TextureIndex texCobble = m_textureAtlas.AddTexture(TEXTURE_PATH "textureCobble.jpg");
+    m_textureAtlas.TextureIndexToCoord(texCobble, u, v, w, h);
+    m_BlockInfo[BTYPE_COBBLE] = new BlockInfo(BTYPE_COBBLE, "Pierre");
+    m_BlockInfo[BTYPE_COBBLE] ->SetWHUV(w,h,u,v);
+    TextureAtlas :: TextureIndex texGazon = m_textureAtlas.AddTexture(TEXTURE_PATH "textureFloor.png");
+    m_textureAtlas.TextureIndexToCoord(texGazon, u, v, w, h);
+    m_BlockInfo[BTYPE_GRASS] = new BlockInfo(BTYPE_GRASS, "Gazon");
+    m_BlockInfo[BTYPE_GRASS] ->SetWHUV(w,h,u,v);
+    
+    if(! m_textureAtlas.Generate (128, false))
+    {
+        std::cout << "Unable to generate texture atlas ..." << std::endl;
+        abort();
+    }
 }
 
 void Engine::UnloadResource()
@@ -95,7 +117,7 @@ void Engine::Render(float elapsedTime)
 
     // Plancher
     // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
-    m_textureGrass.Bind();
+    m_textureAtlas.Bind();
     float nbRep = 50.f;
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0); // Normal vector
@@ -109,16 +131,15 @@ void Engine::Render(float elapsedTime)
     glVertex3f(-50.f, -2.f, -50.f);
     glEnd();
 
-    m_textureCube.Bind();
-    if(m_testChunk.IsDirty ())
-        m_testChunk.Update ();
-    m_shader01.Use();
-    m_testChunk.Render();
-    Shader::Disable ();
-    
+    //if(m_testChunk.IsDirty ())
+    //    m_testChunk.Update ();
+    //m_shader01.Use();
+    //m_testChunk.Render();
+    //Shader::Disable ();
+
     if(m_wireframe)
         glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
-    DrawHud(elapsedTime);
+        DrawHud(elapsedTime);
     if(m_wireframe)
         glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
 }
