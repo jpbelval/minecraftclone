@@ -66,6 +66,8 @@ void Engine::LoadResource()
     LoadTexture(m_textureFloor, TEXTURE_PATH "checker.png");
     LoadTexture(m_textureGrass, TEXTURE_PATH "textureFloor.png");
     LoadTexture(m_textureCube, TEXTURE_PATH "textureBlock.jpg");
+    LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
+    LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
 }
 
 void Engine::UnloadResource()
@@ -84,7 +86,8 @@ void Engine::Render(float elapsedTime)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
-    m_player.CheckFallState();
+    m_player.CheckFallState(elapsedTime);
+    m_player.CheckJump(elapsedTime);
     //Player
     Transformation t;
     m_player.ApplyTransformation(t);
@@ -112,6 +115,12 @@ void Engine::Render(float elapsedTime)
     m_shader01.Use();
     m_testChunk.Render();
     Shader::Disable ();
+    
+    if(m_wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
+    DrawHud(elapsedTime);
+    if(m_wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
 }
 
 void Engine::KeyPressEvent(unsigned char key)
@@ -138,6 +147,12 @@ void Engine::KeyPressEvent(unsigned char key)
             break;
         case 5: //F
             m_player.ToggleisFly();
+            break;
+        case 87:
+            m_keyF3 = !m_keyF3;
+            break;
+        case 57:
+            m_player.Jump();
             break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
@@ -193,6 +208,80 @@ void Engine::MousePressEvent(const MOUSE_BUTTON& button, int x, int y)
 
 void Engine::MouseReleaseEvent(const MOUSE_BUTTON& button, int x, int y)
 {
+}
+
+
+
+void Engine::DrawHud(const float &elaspedTime){
+    glDisable(GL_LIGHTING);
+    glColor4f (1.0f, 1.0f, 1.0f, 1.0f);
+    glBlendFunc(GL_SRC_ALPHA , GL_ONE);
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix ();
+    glLoadIdentity ();
+    glOrtho(0, Width (), 0, Height (), -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix ();
+    // Bind de la texture pour le font
+    if (m_keyF3)
+    {
+        m_textureFont.Bind();
+        std:: ostringstream ss;
+        ss << "Fps: " << 1/elaspedTime;
+        PrintText (10, Height () - 25, ss.str());
+        ss.str ("");
+        ss << "Is Falling: " << m_player.GetIsFalling();
+        PrintText (10, 20, ss.str());
+        ss.str ("");
+        ss << "Position: " << m_player.GetPosition(); // IMPORTANT: on utilise l’operateur << pour afficher la position
+        PrintText (10, 10, ss.str());
+    }
+    // Affichage du crosshair
+    m_textureCrosshair.Bind();
+    static const int crossSize = 32;
+    glLoadIdentity ();
+    glTranslated(Width () / 2 - crossSize / 2, Height () / 2 - crossSize / 2, 0);
+    glBegin(GL_QUADS);
+    glTexCoord2f (0, 0);
+    glVertex2i (0, 0);
+    glTexCoord2f (1, 0);
+    glVertex2i(crossSize , 0);
+    glTexCoord2f (1, 1);
+    glVertex2i(crossSize , crossSize);
+    glTexCoord2f (0, 1);
+    glVertex2i (0, crossSize);
+    glEnd();
+    glEnable(GL_LIGHTING);
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix ();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix ();
+}
+
+void Engine::PrintText(unsigned int x, unsigned int y, const std::string& t){
+    glLoadIdentity ();
+    glTranslated(x, y, 0);
+    for(unsigned int i=0; i<t.length (); ++i)
+    {
+        float left = (float)((t[i] - 32) % 16) / 16.0f;
+        float top = (float)((t[i] - 32) / 16) / 16.0f;
+        top += 0.5f;
+        glBegin(GL_QUADS);
+        glTexCoord2f(left , 1.0f - top - 0.0625f);
+        glVertex2f (0, 0);
+        glTexCoord2f(left + 0.0625f, 1.0f - top - 0.0625f);
+        glVertex2f (12, 0);
+        glTexCoord2f(left + 0.0625f, 1.0f - top);
+        glVertex2f (12, 12);
+        glTexCoord2f(left , 1.0f - top);
+        glVertex2f (0, 12);
+        glEnd();
+        glTranslated (8, 0, 0);
+    }
 }
 
 bool Engine::LoadTexture(Texture& texture, const std::string& filename, bool stopOnError)

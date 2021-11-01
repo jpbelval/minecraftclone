@@ -16,6 +16,8 @@ public:
     virtual void DeInit();
     virtual void LoadResource();
     virtual void UnloadResource();
+    virtual void DrawHud(const float &elapsedTime);
+    virtual void PrintText(unsigned int x, unsigned int y, const std::string& t);
     virtual void Render(float elapsedTime);
     virtual void KeyPressEvent(unsigned char key);
     virtual void KeyReleaseEvent(unsigned char key);
@@ -32,6 +34,8 @@ private:
     Texture m_textureFloor;
     Texture m_textureCube;
     Texture m_textureGrass;
+    Texture m_textureFont;
+    Texture m_textureCrosshair;
 
     Shader m_shader01;
 
@@ -39,6 +43,7 @@ private:
     
     Player m_player;
 
+    bool m_keyF3 = true; //Show stats
     bool m_keyW = false;
     bool m_keyA = false;
     bool m_keyS = false;
