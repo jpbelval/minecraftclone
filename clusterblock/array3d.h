@@ -56,6 +56,13 @@ T Array3d<T>::Get(int x, int y, int z) const
 }
 
 template<class T>
+void Array3d<T>::Reset(T type)
+{
+    for(int i = 0; i < m_x * m_y * m_z; ++i)
+        m_data[i] = type;
+}
+
+template<class T>
 int Array3d<T>::To1dIndex(int x, int y, int z) const
 {
     return x + (z * m_x) + (y * m_z * m_x);
