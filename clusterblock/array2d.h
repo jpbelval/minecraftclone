@@ -13,8 +13,8 @@ class Array2d
 
         void Set(int x, int y, T type);
         T Get(int x, int y) const;
-
-        void Reset(T type);
+        int GetCol() const;
+        int GetRow() const;
 
     private:
         int To1dIndex(int x, int y) const;
@@ -61,4 +61,13 @@ int Array2d<T>::To1dIndex(int x, int y) const
     return y + (x * m_x);
 }
 
+template<class T>
+int Array2d<T>::GetCol() const {
+    return m_y;
+}
+
+template<class T>
+int Array2d<T>::GetRow() const {
+    return m_x;
+}
 #endif
