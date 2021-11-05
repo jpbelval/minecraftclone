@@ -31,6 +31,7 @@ void Player::CheckFallState(const float &elapsedTime){
         m_Position.y -= FALLSPEED * m_fallTime;
     }
     if(m_isFalling && m_Position.y <= 0){
+        m_fallTime = 0;
         m_isFalling = false;
     }
 }
@@ -52,7 +53,6 @@ void Player::CheckJump(){
     {
         m_Position.y += 0.1;
         if(m_Position.y > 2){
-            m_fallTime = 0;
             m_isFalling = true;
             m_isJumping = false;
         }
