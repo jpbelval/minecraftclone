@@ -47,19 +47,16 @@ void Player::TurnTopBottom(float value){
         m_RotX = -90;
 }
 
-void Player::CheckJump(const float &elapsedTime){
-    if (m_isJumping && m_Position.y < JUMP_HEIGHT)
+void Player::CheckJump(){
+    if (m_isJumping)
     {
-        m_jumpTime += elapsedTime;
-        m_Position.y +=  1 / m_jumpTime - m_jumpTime;
+        m_Position.y += 0.1;
+        if(m_Position.y > 2){
+            m_fallTime = 0;
+            m_isFalling = true;
+            m_isJumping = false;
+        }
     }
-    else if (m_isJumping && m_Position.y >= JUMP_HEIGHT)
-    {
-        m_jumpTime = 0.f;
-        m_isJumping = false;
-        m_isFalling = true;
-    }
-    
     
 }
 

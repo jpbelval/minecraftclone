@@ -124,7 +124,7 @@ void Engine::Render(float elapsedTime)
     glLoadIdentity();
     m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
     m_player.CheckFallState(elapsedTime);
-    m_player.CheckJump(elapsedTime);
+    m_player.CheckJump();
     //Player
     Transformation t;
     m_player.ApplyTransformation(t);

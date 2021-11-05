@@ -25,7 +25,7 @@ public:
     Vector3f GetPosition() const;
     bool GetIsFalling() const;
     void Jump();
-    void CheckJump(const float &elapsedTime);
+    void CheckJump();
     void TurnLeftRight(float value);
     void TurnTopBottom(float value);
     void Move(bool front , bool back , bool left , bool right , float elapsedTime);
