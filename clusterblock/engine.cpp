@@ -20,12 +20,13 @@ void Engine::Init()
     std::cout << m_chunkArray2d.GetCol() << std::endl;
     
 
+
     for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
     {
         for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
         {
-            // m_chunkArray2d.Set(i, j, new Chunk());
             std::cout << "New chunk created" << std::endl;
+            m_chunkArray2d.Set(i,j,new Chunk());
         }
         
     }
@@ -132,19 +133,26 @@ void Engine::Render(float elapsedTime)
 
     // Plancher
     // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
+    // m_textureAtlas.Bind();
+    // float nbRep = 50.f;
+    // glBegin(GL_QUADS);
+    // glNormal3f(0, 1, 0); // Normal vector
+    // glTexCoord2f(0, 0);
+    // glVertex3f(-50.f, -2.f, 50.f);
+    // glTexCoord2f(nbRep, 0);
+    // glVertex3f(50.f, -2.f, 50.f);
+    // glTexCoord2f(nbRep, nbRep);
+    // glVertex3f(50.f, -2.f, -50.f);
+    // glTexCoord2f(0, nbRep);
+    // glVertex3f(-50.f, -2.f, -50.f);
+    // glEnd();
+
     m_textureAtlas.Bind();
-    float nbRep = 50.f;
-    glBegin(GL_QUADS);
-    glNormal3f(0, 1, 0); // Normal vector
-    glTexCoord2f(0, 0);
-    glVertex3f(-50.f, -2.f, 50.f);
-    glTexCoord2f(nbRep, 0);
-    glVertex3f(50.f, -2.f, 50.f);
-    glTexCoord2f(nbRep, nbRep);
-    glVertex3f(50.f, -2.f, -50.f);
-    glTexCoord2f(0, nbRep);
-    glVertex3f(-50.f, -2.f, -50.f);
-    glEnd();
+    if(m_chunkArray2d.Get(1,1)->IsDirty())
+        m_chunkArray2d.Get(1,1)->Update();
+    m_shader01.Use();
+    m_chunkArray2d.Get(1,1)->Render();
+    Shader::Disable();
 
     //if(m_testChunk.IsDirty ())
     //    m_testChunk.Update ();

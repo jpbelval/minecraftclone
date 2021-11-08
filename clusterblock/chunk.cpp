@@ -9,10 +9,15 @@ Chunk::Chunk() : m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z)
     {
         for (int z = 0; z < CHUNK_SIZE_Z; ++z)
         {
-            for (int y = 0; y < 32; ++y)
+            for (int y = 0; y < CHUNK_SIZE_Y; ++y)
             {
-                if (x % 2 == 0 && y % 2 == 0 && z % 2 == 0)
+                if (y > 1)
+                {
+                    SetBlock(x, y, z, BTYPE_AIR);
+                }
+                else{
                     SetBlock(x, y, z, BTYPE_DIRT);
+                }
             }
         }
     }
@@ -48,12 +53,12 @@ void Chunk::Update()
         {
             for (int z = 0; z < CHUNK_SIZE_Z; ++z)
             {
-                for (int y = 0; y < CHUNK_SIZE_Y; ++y)
+                for (int y = 0; y < 16; ++y)
                 {
                     if (count > USHRT_MAX)
                         break;
                     BlockType bt = GetBlock(x, y, z);
-                    if (bt != BTYPE_AIR)
+                    if (bt != BTYPE_AIR && GetBlock(x,y+1,z) == BTYPE_AIR)
                     {
                         AddBlockToMesh(vd, count, bt, x, y, z);
                     }
