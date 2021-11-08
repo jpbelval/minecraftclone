@@ -2,6 +2,7 @@
 #define CHUNK_H__
 #include "array3d.h"
 #include "vertexbuffer.h"
+#include "blockinfo.h"
 
 class Chunk
 {

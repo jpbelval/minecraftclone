@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,0,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(0,1.5,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
@@ -148,10 +148,36 @@ void Engine::Render(float elapsedTime)
     // glEnd();
 
     m_textureAtlas.Bind();
+    t.ApplyTranslation(0,-1,0);
+    t.Use();
     if(m_chunkArray2d.Get(1,1)->IsDirty())
         m_chunkArray2d.Get(1,1)->Update();
     m_shader01.Use();
     m_chunkArray2d.Get(1,1)->Render();
+    Shader::Disable();
+
+    t.ApplyTranslation(-CHUNK_SIZE_X,0,0);
+    t.Use();
+    if(m_chunkArray2d.Get(2,1)->IsDirty())
+        m_chunkArray2d.Get(2,1)->Update();
+    m_shader01.Use();
+    m_chunkArray2d.Get(2,1)->Render();
+    Shader::Disable();
+
+    t.ApplyTranslation(0, 0 , -CHUNK_SIZE_Z);
+    t.Use();
+    if(m_chunkArray2d.Get(3,1)->IsDirty())
+        m_chunkArray2d.Get(3,1)->Update();
+    m_shader01.Use();
+    m_chunkArray2d.Get(3,1)->Render();
+    Shader::Disable();
+
+    t.ApplyTranslation(CHUNK_SIZE_X, 0 , 0);
+    t.Use();
+    if(m_chunkArray2d.Get(4,1)->IsDirty())
+        m_chunkArray2d.Get(4,1)->Update();
+    m_shader01.Use();
+    m_chunkArray2d.Get(4,1)->Render();
     Shader::Disable();
 
     //if(m_testChunk.IsDirty ())
