@@ -30,7 +30,7 @@ void Engine::Init()
         }
         
     }
-    
+  
     
     GLenum glewErr = glewInit();
     if(glewErr != GLEW_OK)
@@ -151,7 +151,7 @@ void Engine::Render(float elapsedTime)
     t.ApplyTranslation(0,-1,0);
     t.Use();
     if(m_chunkArray2d.Get(1,1)->IsDirty())
-        m_chunkArray2d.Get(1,1)->Update();
+        m_chunkArray2d.Get(1,1)->Update(m_BlockInfo);
     m_shader01.Use();
     m_chunkArray2d.Get(1,1)->Render();
     Shader::Disable();
@@ -159,7 +159,7 @@ void Engine::Render(float elapsedTime)
     t.ApplyTranslation(-CHUNK_SIZE_X,0,0);
     t.Use();
     if(m_chunkArray2d.Get(2,1)->IsDirty())
-        m_chunkArray2d.Get(2,1)->Update();
+        m_chunkArray2d.Get(2,1)->Update(m_BlockInfo);
     m_shader01.Use();
     m_chunkArray2d.Get(2,1)->Render();
     Shader::Disable();
@@ -167,7 +167,7 @@ void Engine::Render(float elapsedTime)
     t.ApplyTranslation(0, 0 , -CHUNK_SIZE_Z);
     t.Use();
     if(m_chunkArray2d.Get(3,1)->IsDirty())
-        m_chunkArray2d.Get(3,1)->Update();
+        m_chunkArray2d.Get(3,1)->Update(m_BlockInfo);
     m_shader01.Use();
     m_chunkArray2d.Get(3,1)->Render();
     Shader::Disable();
@@ -175,7 +175,7 @@ void Engine::Render(float elapsedTime)
     t.ApplyTranslation(CHUNK_SIZE_X, 0 , 0);
     t.Use();
     if(m_chunkArray2d.Get(4,1)->IsDirty())
-        m_chunkArray2d.Get(4,1)->Update();
+        m_chunkArray2d.Get(4,1)->Update(m_BlockInfo);
     m_shader01.Use();
     m_chunkArray2d.Get(4,1)->Render();
     Shader::Disable();

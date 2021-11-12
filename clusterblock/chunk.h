@@ -13,10 +13,10 @@ class Chunk
     void RemoveBlock(int x, int y, int z);
     void SetBlock(int x, int y, int z, BlockType type);
     BlockType GetBlock(int x, int y, int z);
-    void Update();
+    void Update(BlockInfo* blockInfo[]);
     void Render() const;
     bool IsDirty() const;
-    void AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType bt, int x, int y, int z);
+    void AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType bt, int x, int y, int z, float u, float v, float w, float h);
 
     private:
     Array3d<BlockType> m_blocks;
