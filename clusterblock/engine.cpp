@@ -29,7 +29,7 @@ void Engine::Init()
         }
         
     }
-    
+  
     
     GLenum glewErr = glewInit();
     if(glewErr != GLEW_OK)
@@ -138,7 +138,7 @@ void Engine::Render(float elapsedTime)
         for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
         {
             if(m_chunkArray2d.Get(i,j)->IsDirty())
-                m_chunkArray2d.Get(i,j)->Update();
+                m_chunkArray2d.Get(i,j)->Update(m_BlockInfo);
             m_chunkArray2d.Get(i,j)->Render();
         }
         
