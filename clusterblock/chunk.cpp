@@ -2,7 +2,7 @@
 #include <climits>
 #include <iostream>
 
-Chunk::Chunk() : m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z)
+Chunk::Chunk(int x, int y) : m_PositionX(x), m_PosistionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true)
 {
     m_blocks.Reset(BTYPE_AIR);
     for (int x = 0; x < CHUNK_SIZE_X; ++x)
@@ -58,7 +58,8 @@ void Chunk::Update()
                     if (count > USHRT_MAX)
                         break;
                     BlockType bt = GetBlock(x, y, z);
-                    if (bt != BTYPE_AIR && GetBlock(x,y+1,z) == BTYPE_AIR)
+                    // && GetBlock(x,y+1,z) == BTYPE_AIR
+                    if (bt != BTYPE_AIR)
                     {
                         AddBlockToMesh(vd, count, bt, x, y, z);
                     }
@@ -77,6 +78,8 @@ void Chunk::Update()
 }
 void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType bt, int x, int y, int z)
 {
+    x = x + m_PositionX;
+    z = z + m_PosistionY;
     // front
     vd[count++] = VertexBuffer::VertexData(x - .5f, y - .5f, z + .5f, 1.f, 1.f, 1.f, 0.f, 0.f);
     vd[count++] = VertexBuffer::VertexData(x + .5f, y - .5f, z + .5f, 1.f, 1.f, 1.f, 1.f, 0.f);

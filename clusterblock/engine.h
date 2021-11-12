@@ -41,8 +41,6 @@ private:
     Texture m_textureCrosshair;
 
     Shader m_shader01;
-
-    Chunk m_testChunk;
     
     Player m_player;
 

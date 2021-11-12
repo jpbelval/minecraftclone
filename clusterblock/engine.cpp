@@ -25,8 +25,7 @@ void Engine::Init()
     {
         for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
         {
-            std::cout << "New chunk created" << std::endl;
-            m_chunkArray2d.Set(i,j,new Chunk());
+            m_chunkArray2d.Set(i,j,new Chunk(i * CHUNK_SIZE_X, j * CHUNK_SIZE_Z));
         }
         
     }
@@ -131,60 +130,20 @@ void Engine::Render(float elapsedTime)
     m_player.ApplyTransformation(t);
     t.Use();
 
-    // Plancher
-    // Les vertex doivent etre affiches dans le sens anti-horaire (CCW)
-    // m_textureAtlas.Bind();
-    // float nbRep = 50.f;
-    // glBegin(GL_QUADS);
-    // glNormal3f(0, 1, 0); // Normal vector
-    // glTexCoord2f(0, 0);
-    // glVertex3f(-50.f, -2.f, 50.f);
-    // glTexCoord2f(nbRep, 0);
-    // glVertex3f(50.f, -2.f, 50.f);
-    // glTexCoord2f(nbRep, nbRep);
-    // glVertex3f(50.f, -2.f, -50.f);
-    // glTexCoord2f(0, nbRep);
-    // glVertex3f(-50.f, -2.f, -50.f);
-    // glEnd();
-
     m_textureAtlas.Bind();
-    t.ApplyTranslation(0,-1,0);
-    t.Use();
-    if(m_chunkArray2d.Get(1,1)->IsDirty())
-        m_chunkArray2d.Get(1,1)->Update();
-    m_shader01.Use();
-    m_chunkArray2d.Get(1,1)->Render();
-    Shader::Disable();
 
-    t.ApplyTranslation(-CHUNK_SIZE_X,0,0);
-    t.Use();
-    if(m_chunkArray2d.Get(2,1)->IsDirty())
-        m_chunkArray2d.Get(2,1)->Update();
     m_shader01.Use();
-    m_chunkArray2d.Get(2,1)->Render();
+    for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
+    {
+        for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
+        {
+            if(m_chunkArray2d.Get(i,j)->IsDirty())
+                m_chunkArray2d.Get(i,j)->Update();
+            m_chunkArray2d.Get(i,j)->Render();
+        }
+        
+    }
     Shader::Disable();
-
-    t.ApplyTranslation(0, 0 , -CHUNK_SIZE_Z);
-    t.Use();
-    if(m_chunkArray2d.Get(3,1)->IsDirty())
-        m_chunkArray2d.Get(3,1)->Update();
-    m_shader01.Use();
-    m_chunkArray2d.Get(3,1)->Render();
-    Shader::Disable();
-
-    t.ApplyTranslation(CHUNK_SIZE_X, 0 , 0);
-    t.Use();
-    if(m_chunkArray2d.Get(4,1)->IsDirty())
-        m_chunkArray2d.Get(4,1)->Update();
-    m_shader01.Use();
-    m_chunkArray2d.Get(4,1)->Render();
-    Shader::Disable();
-
-    //if(m_testChunk.IsDirty ())
-    //    m_testChunk.Update ();
-    //m_shader01.Use();
-    //m_testChunk.Render();
-    //Shader::Disable ();
 
     if(m_wireframe)
         glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);

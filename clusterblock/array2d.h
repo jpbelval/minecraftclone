@@ -58,7 +58,7 @@ T Array2d<T>::Get(int x, int y) const
 template<class T>
 int Array2d<T>::To1dIndex(int x, int y) const
 {
-    return y + (x * m_x);
+    return x + (y * m_x);
 }
 
 template<class T>

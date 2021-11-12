@@ -7,7 +7,7 @@
 class Chunk
 {
     public:
-    Chunk();
+    Chunk(int x, int y);
     ~Chunk();
 
     void RemoveBlock(int x, int y, int z);
@@ -22,6 +22,8 @@ class Chunk
     Array3d<BlockType> m_blocks;
     VertexBuffer m_vertexBuffer;
     bool m_isDirty;
+    int m_PositionX;
+    int m_PosistionY;
 };
 
 #endif // CHUNK_H__
