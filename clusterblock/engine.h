@@ -37,7 +37,7 @@ public:
     template <class T>
     BlockType BlockAt(T x, T y, T z, BlockType defaultBlockType) const;
 
-    virtual bool CheckCollision();
+    virtual void CheckCollision(const float& elapsedTime);
 
 
 private:

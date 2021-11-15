@@ -8,7 +8,6 @@ class Player
 {
 private:
     Vector3f m_Position;
-    Vector3f m_PositionSimulate;
     float m_RotX;
     float m_RotY;
     bool m_isFly;
@@ -22,7 +21,7 @@ public:
     ~Player();
 
     void ToggleisFly();
-    void CheckFallState(const float &elapsedTime);
+    float CheckFallState(const float &elapsedTime, BlockType bt);
     Vector3f GetPosition() const;
     void SetPosition(Vector3f pos);
     bool GetIsFalling() const;

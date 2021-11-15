@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,4,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(10,4,10.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
@@ -16,8 +16,6 @@ Engine::~Engine()
 
 void Engine::Init()
 {    
-    std::cout << m_chunkArray2d.GetRow() << std::endl;
-    std::cout << m_chunkArray2d.GetCol() << std::endl;
     
 
 
@@ -122,8 +120,8 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
-    m_player.CheckFallState(elapsedTime);
+    CheckCollision(elapsedTime);
+    
     m_player.CheckJump();
     //Player
     Transformation t;
@@ -358,19 +356,21 @@ BlockType Engine::BlockAt(T x, T y, T z, BlockType defaultBlockType) const
     return c->GetBlock(bx, by, bz);
 }
 
-bool Engine::CheckCollision()
+void Engine::CheckCollision(const float &elapsedTime)
 {
-    bool isCollision = false;
     Vector3f pos = m_player.GetPosition();
-    Vector3f delta = m_player.SimulateMove(m_keyW, m_keyS, m_keyA, m_keyD, GL_TIME_ELAPSED);
+    Vector3f delta = m_player.SimulateMove(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
     BlockType bt1, bt2, bt3;
 
+    std::cout << "Nouveau x: " << delta.x << std::endl;
+    std::cout << delta.x << std::endl;
+    std::cout << delta.y << std::endl;
+    std::cout << delta.z << std::endl;
     bt1 = BlockAt(pos.x + delta.x, pos.y, pos.z, BTYPE_AIR);
     bt2 = BlockAt(pos.x + delta.x, pos.y - 0.9f, pos.z, BTYPE_AIR);
     bt3 = BlockAt(pos.x + delta.x, pos.y - 1.7f, pos.z, BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
         delta.x = 0;
-        isCollision = true;
     }
 
     bt1 = BlockAt(pos.x, pos.y, pos.z + delta.z, BTYPE_AIR);
@@ -379,13 +379,14 @@ bool Engine::CheckCollision()
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
     {
         delta.z = 0;
-        isCollision = true;
     }
-    
+
+    bt1 = BlockAt(pos.x + delta.x, pos.y - 1.f, pos.z + delta.z, BTYPE_AIR);
+    pos.y += m_player.CheckFallState(elapsedTime, bt1);
     pos.x += delta.x;
     pos.z += delta.z;
 
-    // m_player.SetPosition(pos);
-    std::cout << m_player.GetPosition() << std::endl;
-    return isCollision;
+    m_player.SetPosition(pos);
+    std::cout << "Position joueur" << m_player.GetPosition() << std::endl;
+    
 }
