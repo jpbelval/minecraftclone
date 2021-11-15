@@ -29,7 +29,7 @@ public:
     void CheckJump();
     void TurnLeftRight(float value);
     void TurnTopBottom(float value);
-    void Move(bool front , bool back , bool left , bool right , float elapsedTime);
+    void Move(bool front , bool back , bool left , bool right , float elapsedTime, float speed);
     void ApplyTransformation(Transformation& transformation) const;
     Vector3f SimulateMove(bool W, bool S, bool A, bool D, float elaspedTime);
 };
