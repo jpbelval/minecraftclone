@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,4,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(0,3.2,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
@@ -122,7 +122,8 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
+    
+    m_player.Move(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime, m_speed);
     m_player.CheckFallState(elapsedTime);
     m_player.CheckJump();
     //Player
@@ -183,6 +184,9 @@ void Engine::KeyPressEvent(unsigned char key)
         case 57:
             m_player.Jump();
             break;
+        case 38:
+            m_speed = 15;
+            break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
     }
@@ -210,6 +214,9 @@ void Engine::KeyReleaseEvent(unsigned char key)
             break;
         case 3:  // D
             m_keyD = false;
+            break;
+        case 38:
+            m_speed = 10;
             break;
     }
 }

@@ -69,7 +69,7 @@ void Player::Jump(){
     
 }
 
-void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime){
+void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime, float speed){
 
     const float vitesse = 10;
 
@@ -77,9 +77,9 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
         
-        m_Position.x += float(sin(yrotrad)) * elapsedTime * vitesse;
+        m_Position.x += float(sin(yrotrad)) * elapsedTime * speed;
         
-        m_Position.z -= float(cos(yrotrad))* elapsedTime * vitesse;
+        m_Position.z -= float(cos(yrotrad))* elapsedTime * speed;
 
         if (m_isFly)
         {
@@ -92,30 +92,30 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
     if(back){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);        
-        m_Position.x -= float(sin(yrotrad))* elapsedTime * vitesse;
-        m_Position.z += float(cos(yrotrad))* elapsedTime * vitesse;
+        m_Position.x -= float(sin(yrotrad))* elapsedTime * speed;
+        m_Position.z += float(cos(yrotrad))* elapsedTime * speed;
 
         if (m_isFly)
         {
             float xrotrad;
             xrotrad = (m_RotX / 180 * 3.141592654f);
-            m_Position.y += float(sin(xrotrad))* elapsedTime * vitesse;
+            m_Position.y += float(sin(xrotrad))* elapsedTime * speed;
         }
     }
 
     if(right){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
-        m_Position.x += float(cos(yrotrad)) * elapsedTime * vitesse;
-        m_Position.z += float(sin(yrotrad)) * elapsedTime * vitesse;
+        m_Position.x += float(cos(yrotrad)) * elapsedTime * speed;
+        m_Position.z += float(sin(yrotrad)) * elapsedTime * speed;
     }
     if(left){
         float yrotrad;
         yrotrad = (m_RotY / 180 * 3.141592654f);
-        m_Position.x -= float(cos(yrotrad)) * elapsedTime * vitesse;
-        m_Position.z -= float(sin(yrotrad)) * elapsedTime * vitesse;
+        m_Position.x -= float(cos(yrotrad)) * elapsedTime * speed;
+        m_Position.z -= float(sin(yrotrad)) * elapsedTime * speed;
     }
-    std::cout << GetPosition().x << std::endl;
+    //std::cout << GetPosition().x << std::endl;
 }
 
 Vector3f Player::GetPosition() const{

@@ -17,6 +17,7 @@ class Chunk
     void Render() const;
     bool IsDirty() const;
     void AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType bt, int x, int y, int z, float u, float v, float w, float h);
+    void GenererStructure();
 
     private:
     Array3d<BlockType> m_blocks;
