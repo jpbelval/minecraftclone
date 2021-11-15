@@ -142,7 +142,7 @@ void Engine::Render(float elapsedTime)
             m_chunkArray2d.Get(i,j)->Render();
         }
         
-    }
+    }    
     Shader::Disable();
 
     if(m_wireframe)
@@ -326,4 +326,66 @@ bool Engine::LoadTexture(Texture& texture, const std::string& filename, bool sto
     }
 
     return true;
+}
+
+template <class T>
+Chunk* Engine::ChunkAt(T x, T y, T z) const
+{
+    int cx = (int)x / CHUNK_SIZE_X;
+    int cz = (int)z / CHUNK_SIZE_Z;
+
+    return m_chunkArray2d.Get(cx, cz);
+}
+
+template <class T>
+Chunk* Engine::ChunkAt(const Vector3<T>& pos) const
+{
+    return ChunkAt(pos.x, pos.y, pos.z);
+}
+
+template <class T>
+BlockType Engine::BlockAt(T x, T y, T z, BlockType defaultBlockType) const
+{
+    Chunk* c = ChunkAt(x, y, z);
+
+    if (!c)
+        return defaultBlockType;
+    
+    int bx = (int)x % CHUNK_SIZE_X;
+    int by = (int)y % CHUNK_SIZE_Y;
+    int bz = (int)z % CHUNK_SIZE_Z;
+
+    return c->GetBlock(bx, by, bz);
+}
+
+bool Engine::CheckCollision()
+{
+    bool isCollision = false;
+    Vector3f pos = m_player.GetPosition();
+    Vector3f delta = m_player.SimulateMove(m_keyW, m_keyS, m_keyA, m_keyD, GL_TIME_ELAPSED);
+    BlockType bt1, bt2, bt3;
+
+    bt1 = BlockAt(pos.x + delta.x, pos.y, pos.z, BTYPE_AIR);
+    bt2 = BlockAt(pos.x + delta.x, pos.y - 0.9f, pos.z, BTYPE_AIR);
+    bt3 = BlockAt(pos.x + delta.x, pos.y - 1.7f, pos.z, BTYPE_AIR);
+    if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
+        delta.x = 0;
+        isCollision = true;
+    }
+
+    bt1 = BlockAt(pos.x, pos.y, pos.z + delta.z, BTYPE_AIR);
+    bt2 = BlockAt(pos.x, pos.y - 0.9f, pos.z + delta.z, BTYPE_AIR);
+    bt3 = BlockAt(pos.x, pos.y - 1.7f, pos.z + delta.z, BTYPE_AIR);
+    if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
+    {
+        delta.z = 0;
+        isCollision = true;
+    }
+    
+    pos.x += delta.x;
+    pos.z += delta.z;
+
+    // m_player.SetPosition(pos);
+    std::cout << m_player.GetPosition() << std::endl;
+    return isCollision;
 }

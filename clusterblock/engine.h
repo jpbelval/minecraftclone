@@ -28,6 +28,18 @@ public:
     virtual void MousePressEvent(const MOUSE_BUTTON &button, int x, int y);
     virtual void MouseReleaseEvent(const MOUSE_BUTTON &button, int x, int y);
 
+    template <class T>
+    Chunk* ChunkAt(T x, T y, T z) const;
+
+    template <class T>
+    Chunk* ChunkAt(const Vector3<T>& pos) const;
+
+    template <class T>
+    BlockType BlockAt(T x, T y, T z, BlockType defaultBlockType) const;
+
+    virtual bool CheckCollision();
+
+
 private:
     bool LoadTexture(Texture& texture, const std::string& filename, bool stopOnError = true);
 

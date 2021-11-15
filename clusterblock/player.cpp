@@ -115,14 +115,45 @@ void Player::Move(bool front , bool back , bool left , bool right, float elapsed
         m_Position.x -= float(cos(yrotrad)) * elapsedTime * vitesse;
         m_Position.z -= float(sin(yrotrad)) * elapsedTime * vitesse;
     }
+    std::cout << GetPosition().x << std::endl;
 }
 
 Vector3f Player::GetPosition() const{
     return m_Position;
 }
 
+void Player::SetPosition(Vector3f pos)
+{
+    m_Position = pos;
+}
+
 void Player::ApplyTransformation(Transformation& transformation) const{
     transformation.ApplyRotation(-m_RotX , 1.f, 0, 0);
     transformation.ApplyRotation(-m_RotY , 0, 1.f, 0);
     transformation.ApplyTranslation(-m_Position);
+}
+
+Vector3f Player::SimulateMove(bool W, bool S, bool A, bool D, float elaspedTime)
+{
+    if (W)
+    {
+        m_PositionSimulate.z = m_Position.z + 1;
+    }
+    if (S)
+    {
+        m_PositionSimulate.z = m_Position.z -1;
+    }
+    if (A)
+    {
+        m_PositionSimulate.x = m_Position.x - 1;
+    }
+    if (D)
+    {
+        m_PositionSimulate.x = m_Position.x + 1;
+    }
+    
+    
+    
+    
+    return m_PositionSimulate;
 }

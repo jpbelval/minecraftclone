@@ -8,6 +8,7 @@ class Player
 {
 private:
     Vector3f m_Position;
+    Vector3f m_PositionSimulate;
     float m_RotX;
     float m_RotY;
     bool m_isFly;
@@ -23,6 +24,7 @@ public:
     void ToggleisFly();
     void CheckFallState(const float &elapsedTime);
     Vector3f GetPosition() const;
+    void SetPosition(Vector3f pos);
     bool GetIsFalling() const;
     void Jump();
     void CheckJump();
@@ -30,7 +32,7 @@ public:
     void TurnTopBottom(float value);
     void Move(bool front , bool back , bool left , bool right , float elapsedTime);
     void ApplyTransformation(Transformation& transformation) const;
-
+    Vector3f SimulateMove(bool W, bool S, bool A, bool D, float elaspedTime);
 };
 
 #endif
