@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,1.5,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(0,4,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
