@@ -24,7 +24,10 @@ public:
     float CheckFallState(const float &elapsedTime, BlockType bt);
     Vector3f GetPosition() const;
     void SetPosition(Vector3f pos);
+    void SetFallTime(float fallTime);
+    float GetFallTime() const;
     bool GetIsFalling() const;
+    void SetIsFalling(bool isFalling);
     void Jump();
     void CheckJump();
     void TurnLeftRight(float value);

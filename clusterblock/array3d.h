@@ -69,9 +69,9 @@ int Array3d<T>::To1dIndex(int x, int y, int z) const
     assert(x>=0);
     assert(y>=0);
     assert(z>=0);
-    assert(x < m_x);
-    assert(y < m_y);
-    assert(z < m_z);
+    // assert(x <= m_x);
+    // assert(y <= m_y);
+    // assert(z <= m_z);
 
     return x + (z * m_x) + (y * m_z * m_x);
 }

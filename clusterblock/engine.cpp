@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(0,3.2,-5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(5,3.5f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
@@ -120,9 +120,9 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    m_player.CheckJump();
     CheckCollision(elapsedTime);
     
-    m_player.CheckJump();
     //Player
     Transformation t;
     m_player.ApplyTransformation(t);
@@ -367,28 +367,37 @@ void Engine::CheckCollision(const float &elapsedTime)
     Vector3f pos = m_player.GetPosition();
     Vector3f delta = m_player.SimulateMove(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
     BlockType bt1, bt2, bt3;
+    float playerDepth = 0.5f;
 
     std::cout << "Nouveau x: " << delta.x << std::endl;
     std::cout << delta.x << std::endl;
     std::cout << delta.y << std::endl;
     std::cout << delta.z << std::endl;
-    bt1 = BlockAt(pos.x + delta.x, pos.y, pos.z, BTYPE_AIR);
-    bt2 = BlockAt(pos.x + delta.x, pos.y - 0.9f, pos.z, BTYPE_AIR);
-    bt3 = BlockAt(pos.x + delta.x, pos.y - 1.7f, pos.z, BTYPE_AIR);
+    bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
+    bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 0.9f, std::round(pos.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 1.7f, std::round(pos.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
         delta.x = 0;
     }
 
-    bt1 = BlockAt(pos.x, pos.y, pos.z + delta.z, BTYPE_AIR);
-    bt2 = BlockAt(pos.x, pos.y - 0.9f, pos.z + delta.z, BTYPE_AIR);
-    bt3 = BlockAt(pos.x, pos.y - 1.7f, pos.z + delta.z, BTYPE_AIR);
+    bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
+    bt2 = BlockAt(std::round(pos.x), std::round(pos.y) - 0.9f, std::round(pos.z + delta.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x), std::round(pos.y) - 1.7f, std::round(pos.z + delta.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
     {
         delta.z = 0;
     }
 
-    bt1 = BlockAt(pos.x + delta.x, pos.y - 1.f, pos.z + delta.z, BTYPE_AIR);
-    pos.y += m_player.CheckFallState(elapsedTime, bt1);
+    bt1 = BlockAt(pos.x, pos.y - 2.f, pos.z, BTYPE_AIR);
+    if(bt1 == BTYPE_AIR){
+        m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
+        delta.y -= FALLSPEED * m_player.GetFallTime();
+        m_player.SetIsFalling(true);
+    }
+    if(bt1 != BTYPE_AIR){
+        m_player.SetIsFalling(false);
+    }
+    pos.y += delta.y;
     pos.x += delta.x;
     pos.z += delta.z;
 
