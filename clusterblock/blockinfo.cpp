@@ -1,7 +1,7 @@
 #include "blockinfo.h"
 #include <iostream>
 
-BlockInfo::BlockInfo(BlockType type, const std::string& name) : m_type(type), m_name(name), m_durability(1)
+BlockInfo::BlockInfo(BlockType type, const std::string& name) : m_type(type), m_name(name)
 {
 }
 

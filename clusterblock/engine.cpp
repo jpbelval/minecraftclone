@@ -87,18 +87,22 @@ void Engine::LoadResource()
     m_textureAtlas.TextureIndexToCoord(texPlanche, u, v, w, h);
     m_BlockInfo[BTYPE_PLANK] = new BlockInfo(BTYPE_PLANK, "Planche");
     m_BlockInfo[BTYPE_PLANK] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_PLANK] ->SetDurability(15);
     TextureAtlas :: TextureIndex texTerre = m_textureAtlas.AddTexture(TEXTURE_PATH "textureTerre.jpg");
     m_textureAtlas.TextureIndexToCoord(texTerre, u, v, w, h);
     m_BlockInfo[BTYPE_DIRT] = new BlockInfo(BTYPE_DIRT, "Terre");
     m_BlockInfo[BTYPE_DIRT] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_DIRT] ->SetDurability(10);
     TextureAtlas :: TextureIndex texCobble = m_textureAtlas.AddTexture(TEXTURE_PATH "textureCobble.jpg");
     m_textureAtlas.TextureIndexToCoord(texCobble, u, v, w, h);
     m_BlockInfo[BTYPE_COBBLE] = new BlockInfo(BTYPE_COBBLE, "Pierre");
     m_BlockInfo[BTYPE_COBBLE] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_COBBLE] ->SetDurability(30);
     TextureAtlas :: TextureIndex texGazon = m_textureAtlas.AddTexture(TEXTURE_PATH "textureFloor.png");
     m_textureAtlas.TextureIndexToCoord(texGazon, u, v, w, h);
     m_BlockInfo[BTYPE_GRASS] = new BlockInfo(BTYPE_GRASS, "Gazon");
     m_BlockInfo[BTYPE_GRASS] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_GRASS] ->SetDurability(10);
     
     if(! m_textureAtlas.Generate (128, false))
     {
