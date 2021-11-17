@@ -2,6 +2,7 @@
 #define BLOCKARRAY3D_H__
 
 #include "define.h"
+#include <cassert>
 
 template<class T>
 class Array3d
@@ -65,6 +66,13 @@ void Array3d<T>::Reset(T type)
 template<class T>
 int Array3d<T>::To1dIndex(int x, int y, int z) const
 {
+    assert(x>=0);
+    assert(y>=0);
+    assert(z>=0);
+    // assert(x <= m_x);
+    // assert(y <= m_y);
+    // assert(z <= m_z);
+
     return x + (z * m_x) + (y * m_z * m_x);
 }
 

@@ -16,24 +16,16 @@ bool Player::GetIsFalling() const{
     return m_isFalling;
 }
 
+void Player::SetIsFalling(bool isFalling){
+    m_isFalling = isFalling;
+}
+
 void Player::ToggleisFly(){
     if(m_isFly)
         m_isFalling = true;
     else
         m_isFalling = false;
     m_isFly = !m_isFly;
-}
-
-void Player::CheckFallState(const float &elapsedTime){
-
-    if(m_isFalling && m_Position.y > 0){
-        m_fallTime += elapsedTime;
-        m_Position.y -= FALLSPEED * m_fallTime;
-    }
-    if(m_isFalling && m_Position.y <= 0){
-        m_fallTime = 0;
-        m_isFalling = false;
-    }
 }
 
 void Player::TurnLeftRight(float value){
@@ -52,7 +44,7 @@ void Player::CheckJump(){
     if (m_isJumping)
     {
         m_Position.y += 0.1;
-        if(m_Position.y > 2){
+        if(m_Position.y > 5){
             m_isFalling = true;
             m_isJumping = false;
         }
@@ -127,33 +119,67 @@ void Player::SetPosition(Vector3f pos)
     m_Position = pos;
 }
 
+void Player::SetFallTime(float floatTime){
+    m_fallTime = floatTime;
+}
+
+float Player::GetFallTime() const{
+    return m_fallTime;
+}
+
 void Player::ApplyTransformation(Transformation& transformation) const{
     transformation.ApplyRotation(-m_RotX , 1.f, 0, 0);
     transformation.ApplyRotation(-m_RotY , 0, 1.f, 0);
     transformation.ApplyTranslation(-m_Position);
 }
 
-Vector3f Player::SimulateMove(bool W, bool S, bool A, bool D, float elaspedTime)
+Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, float elapsedTime)
 {
-    if (W)
+    const float vitesse = 10;
+    Vector3f positionSimu(0,0,0);
+
+    if (front)
     {
-        m_PositionSimulate.z = m_Position.z + 1;
+        float yrotrad;
+        yrotrad = (m_RotY / 180 * 3.141592654f);
+        
+        positionSimu.x += float(sin(yrotrad)) * elapsedTime * vitesse;
+        
+        positionSimu.z -= float(cos(yrotrad))* elapsedTime * vitesse;
+
+        if (m_isFly)
+        {
+            float xrotrad;
+            xrotrad = (m_RotX / 180 * 3.141592654f);
+            m_Position.y -= float(sin(xrotrad));
+        }
     }
-    if (S)
+    if (back)
     {
-        m_PositionSimulate.z = m_Position.z -1;
+        float yrotrad;
+        yrotrad = (m_RotY / 180 * 3.141592654f);        
+        positionSimu.x -= float(sin(yrotrad))* elapsedTime * vitesse;
+        positionSimu.z += float(cos(yrotrad))* elapsedTime * vitesse;
+        if (m_isFly)
+        {
+            float xrotrad;
+            xrotrad = (m_RotX / 180 * 3.141592654f);
+            m_Position.y += float(sin(xrotrad))* elapsedTime * vitesse;
+        }
     }
-    if (A)
+    if (left)
     {
-        m_PositionSimulate.x = m_Position.x - 1;
+        float yrotrad;
+        yrotrad = (m_RotY / 180 * 3.141592654f);
+        positionSimu.x -= float(cos(yrotrad)) * elapsedTime * vitesse;
+        positionSimu.z -= float(sin(yrotrad)) * elapsedTime * vitesse;
     }
-    if (D)
+    if (right)
     {
-        m_PositionSimulate.x = m_Position.x + 1;
+        float yrotrad;
+        yrotrad = (m_RotY / 180 * 3.141592654f);
+        positionSimu.x += float(cos(yrotrad)) * elapsedTime * vitesse;
+        positionSimu.z +=  float(sin(yrotrad)) * elapsedTime * vitesse;
     }
-    
-    
-    
-    
-    return m_PositionSimulate;
+    return positionSimu;
 }

@@ -171,7 +171,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
         
     }
     
-    if (GetBlock(xInitial, y- 1, zInitial) == BTYPE_AIR)
+    if (y > 0 && GetBlock(xInitial, y - 1, zInitial) == BTYPE_AIR)
     {
         //bot
         vd[count++] = VertexBuffer::VertexData(x + .5f, y - .5f, z + .5f, .7f, .7f, .7f, u, v);
