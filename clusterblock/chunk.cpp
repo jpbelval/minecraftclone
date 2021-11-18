@@ -142,7 +142,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
         vd[count++] = VertexBuffer::VertexData(x + .5f, y + .5f, z - .5f, 1.f, 1.f, 1.f, u+w, v+h);
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z - .5f, 1.f, 1.f, 1.f, u, v+h);
     }
-    if (xInitial == CHUNK_SIZE_X || xInitial == 0 || GetBlock(x + 1, yInitial, zInitial) == BTYPE_AIR || GetBlock(x - 1, yInitial, zInitial) == BTYPE_AIR)
+    if (x>0 && xInitial == CHUNK_SIZE_X || xInitial == 0 || GetBlock(x + 1, yInitial, zInitial) == BTYPE_AIR || GetBlock(x - 1, yInitial, zInitial) == BTYPE_AIR)
     {
         //Right
         vd[count++] = VertexBuffer::VertexData(x + .5f, y - .5f, z + .5f, .8f, .8f, .8f, u, v);
@@ -155,7 +155,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z + .5f, .8f, .8f, .8f, u+w, v+h);
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z - .5f, .8f, .8f, .8f, u, v+h);
     }
-    if (zInitial == CHUNK_SIZE_Y || zInitial == 0 || GetBlock(xInitial, yInitial, z + 1) == BTYPE_AIR || GetBlock(xInitial, yInitial, z - 1) == BTYPE_AIR)
+    if (z>0 && zInitial == CHUNK_SIZE_Y || zInitial == 0 || GetBlock(xInitial, yInitial, z + 1) == BTYPE_AIR || GetBlock(xInitial, yInitial, z - 1) == BTYPE_AIR)
     {
 
         //Back
