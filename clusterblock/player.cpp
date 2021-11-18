@@ -16,32 +16,16 @@ bool Player::GetIsFalling() const{
     return m_isFalling;
 }
 
+void Player::SetIsFalling(bool isFalling){
+    m_isFalling = isFalling;
+}
+
 void Player::ToggleisFly(){
     if(m_isFly)
         m_isFalling = true;
     else
         m_isFalling = false;
     m_isFly = !m_isFly;
-}
-
-float Player::CheckFallState(const float &elapsedTime, BlockType bt){
-
-    float deltaY = 0.f;
-
-    if (!m_isFly)
-    {
-        if(m_isFalling && bt == BTYPE_AIR){
-            m_fallTime += elapsedTime;
-            deltaY -= FALLSPEED * m_fallTime;
-        }
-        if(m_isFalling && bt != BTYPE_AIR){
-            m_fallTime = 0;
-            m_isFalling = false;
-        }
-    }
-
-    return deltaY;
-    
 }
 
 void Player::TurnLeftRight(float value){
@@ -60,7 +44,7 @@ void Player::CheckJump(){
     if (m_isJumping)
     {
         m_Position.y += 0.1;
-        if(m_Position.y > 2){
+        if(m_Position.y > 5){
             m_isFalling = true;
             m_isJumping = false;
         }
@@ -133,6 +117,14 @@ Vector3f Player::GetPosition() const{
 void Player::SetPosition(Vector3f pos)
 {
     m_Position = pos;
+}
+
+void Player::SetFallTime(float floatTime){
+    m_fallTime = floatTime;
+}
+
+float Player::GetFallTime() const{
+    return m_fallTime;
 }
 
 void Player::ApplyTransformation(Transformation& transformation) const{
