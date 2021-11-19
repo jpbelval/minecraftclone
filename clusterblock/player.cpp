@@ -148,7 +148,11 @@ void Player::ApplyTransformation(Transformation& transformation) const{
 
 Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, float elapsedTime)
 {
-    const float vitesse = 10;
+    float vitesse = 8;
+    if(m_isFalling){
+        vitesse = vitesse / 2;
+    }
+    
     Vector3f positionSimu(0,0,0);
 
     if (front)

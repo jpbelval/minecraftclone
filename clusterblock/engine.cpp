@@ -383,21 +383,21 @@ void Engine::CheckCollision(const float &elapsedTime)
     std::cout << delta.y << std::endl;
     std::cout << delta.z << std::endl;
     bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
-    bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 0.9f, std::round(pos.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 1.f, std::round(pos.z), BTYPE_AIR);
+    bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 0.9f), std::round(pos.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.f), std::round(pos.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
         delta.x = 0;
     }
 
     bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
-    bt2 = BlockAt(std::round(pos.x), std::round(pos.y) - 0.9f, std::round(pos.z + delta.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x), std::round(pos.y) - 1.f, std::round(pos.z + delta.z), BTYPE_AIR);
+    bt2 = BlockAt(std::round(pos.x), std::round(pos.y - 0.9f), std::round(pos.z + delta.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x), std::round(pos.y - 1.f), std::round(pos.z + delta.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
     {
         delta.z = 0;
     }
 
-    bt1 = BlockAt(pos.x, pos.y - 1.2f, pos.z, BTYPE_AIR);
+    bt1 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
     if(bt1 == BTYPE_AIR && m_player.GetIsJumping() == false){
         m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
         delta.y -= FALLSPEED * m_player.GetFallTime();
@@ -408,8 +408,8 @@ void Engine::CheckCollision(const float &elapsedTime)
         m_player.SetFallTime(0);
     }
 
-    bt1 = BlockAt(pos.x, pos.y + 0.4f, pos.z, BTYPE_AIR);
-    bt2 = BlockAt(pos.x, pos.y - 1.2f, pos.z, BTYPE_AIR);
+    bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);
+    bt2 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
     if (bt1 != BTYPE_AIR && bt2 == BTYPE_AIR)
     {
         m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
