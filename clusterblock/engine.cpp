@@ -36,6 +36,7 @@ void Engine::Init()
         std::cerr << "ERREUR GLEW: " << glewGetErrorString(glewErr) << std::endl;
         abort();
     }
+    
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
     glMatrixMode(GL_PROJECTION);
@@ -48,7 +49,6 @@ void Engine::Init()
     glEnable(GL_LINE_SMOOTH);
 
     glEnable(GL_CULL_FACE);
-
     // Light
     GLfloat light0Pos[4] = { 0.0f, CHUNK_SIZE_Y, 0.0f, 1.0f };
     GLfloat light0Amb[4] = { 0.9f, 0.9f, 0.9f, 1.0f };

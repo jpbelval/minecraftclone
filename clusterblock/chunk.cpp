@@ -57,19 +57,19 @@ void Chunk::GenererStructure(){
     SetBlock(6,4,14, BTYPE_COBBLE);
 
     //Mur Z = le meme
-    SetBlock(11,2,14, BTYPE_COBBLE);
-    SetBlock(12,2,14, BTYPE_COBBLE);
-    SetBlock(13,2,14, BTYPE_COBBLE);
-    SetBlock(14,2,14, BTYPE_COBBLE);
-    SetBlock(14,3,14, BTYPE_COBBLE);
-    SetBlock(11,3,14, BTYPE_COBBLE);
-    SetBlock(12,3,14, BTYPE_COBBLE);
-    SetBlock(13,3,14, BTYPE_COBBLE);
-    SetBlock(14,3,14, BTYPE_COBBLE);
-    SetBlock(11,4,14, BTYPE_COBBLE);
-    SetBlock(12,4,14, BTYPE_COBBLE);
-    SetBlock(13,4,14, BTYPE_COBBLE);
-    SetBlock(14,4,14, BTYPE_COBBLE);
+    SetBlock(11,2,14, BTYPE_PLANK);
+    SetBlock(12,2,14, BTYPE_PLANK);
+    SetBlock(13,2,14, BTYPE_PLANK);
+    SetBlock(14,2,14, BTYPE_PLANK);
+    SetBlock(14,3,14, BTYPE_PLANK);
+    SetBlock(11,3,14, BTYPE_PLANK);
+    SetBlock(12,3,14, BTYPE_PLANK);
+    SetBlock(13,3,14, BTYPE_PLANK);
+    SetBlock(14,3,14, BTYPE_PLANK);
+    SetBlock(11,4,14, BTYPE_PLANK);
+    SetBlock(12,4,14, BTYPE_PLANK);
+    SetBlock(13,4,14, BTYPE_PLANK);
+    SetBlock(14,4,14, BTYPE_PLANK);
 }
 
 
