@@ -58,6 +58,13 @@ T Array2d<T>::Get(int x, int y) const
 template<class T>
 int Array2d<T>::To1dIndex(int x, int y) const
 {
+    assert(x>=0);
+    assert(y>=0);
+
+    assert(x <= m_x);
+    assert(y <= m_y);
+    
+
     return x + (y * m_x);
 }
 
