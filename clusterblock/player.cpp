@@ -46,11 +46,9 @@ void Player::CheckJump(float elapsedTime){
     if (m_isJumping && m_isFalling == false)
     {
         float transfY = 0.f;
-        std::cout << m_jumpHeight << std::endl;
         m_jumpTime += elapsedTime;
         transfY = .23f - 1.f * m_jumpTime;
         m_Position.y += transfY;
-        std::cout << "Diff y" <<(2.f *  (1.f - elapsedTime) * (1.f - elapsedTime) - 1.f * elapsedTime) << std::endl;
         if(m_Position.y > m_jumpHeight){
             m_isFalling = true;
             m_isJumping = false;
