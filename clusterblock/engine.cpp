@@ -342,6 +342,10 @@ Chunk* Engine::ChunkAt(T x, T y, T z) const
     int cx = (int)x / CHUNK_SIZE_X;
     int cz = (int)z / CHUNK_SIZE_Z;
 
+    if(x < 0 || y < 0 || z < 0){
+        return 0;
+    }
+
     return m_chunkArray2d.Get(cx, cz);
 }
 
