@@ -80,6 +80,7 @@ void Engine::LoadResource()
 
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
+    LoadTexture(m_textureArm, TEXTURE_PATH "arm.png");
 
     TextureAtlas :: TextureIndex texPlanche = m_textureAtlas.AddTexture(TEXTURE_PATH "Planche.jpg");
     m_textureAtlas.TextureIndexToCoord(texPlanche, u, v, w, h);
@@ -186,7 +187,10 @@ void Engine::KeyPressEvent(unsigned char key)
             m_player.Jump();
             break;
         case 38:
-            m_player.SetSpeed(WALK_SPEED + 3.f);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            gluPerspective(50.0f, (float)Width() / (float)Height(), 0.0001f, 1000.0f);
+            m_player.SetSpeed(WALK_SPEED + 5.f);
             break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
@@ -218,6 +222,9 @@ void Engine::KeyReleaseEvent(unsigned char key)
             break;
         case 38:
             m_player.SetSpeed(WALK_SPEED);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            gluPerspective(45.0f, (float)Width() / (float)Height(), 0.0001f, 1000.0f);
             break;
     }
 }
@@ -290,6 +297,22 @@ void Engine::DrawHud(const float &elaspedTime){
     glTexCoord2f (0, 1);
     glVertex2i (0, crossSize);
     glEnd();
+
+    m_textureArm.Bind();
+    static const int armSize = 200;
+    glLoadIdentity ();
+    glTranslated(Width() - (armSize + 10), 0, 0);
+    glBegin(GL_QUADS);
+    glTexCoord2f (0, 0);
+    glVertex2i (0, 0);
+    glTexCoord2f (1, 0);
+    glVertex2i(armSize , 0);
+    glTexCoord2f (1, 1);
+    glVertex2i(armSize , armSize);
+    glTexCoord2f (0, 1);
+    glVertex2i (0, armSize);
+    glEnd();
+
     glEnable(GL_LIGHTING);
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -375,46 +398,47 @@ void Engine::CheckCollision(const float &elapsedTime)
     Vector3f pos = m_player.GetPosition();
     Vector3f delta = m_player.SimulateMove(m_keyW, m_keyS, m_keyA, m_keyD, elapsedTime);
     BlockType bt1, bt2, bt3;
-    float playerDepth = 0.5f;
-
-    bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
-    bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 0.9f), std::round(pos.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.f), std::round(pos.z), BTYPE_AIR);
-    if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
-        delta.x = 0;
-    }
-
-    bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
-    bt2 = BlockAt(std::round(pos.x), std::round(pos.y - 0.9f), std::round(pos.z + delta.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x), std::round(pos.y - 1.f), std::round(pos.z + delta.z), BTYPE_AIR);
-    if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
+    if (!m_player.GetIsFlying())
     {
-        delta.z = 0;
-    }
+        
+        bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
+        bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 0.9f), std::round(pos.z), BTYPE_AIR);
+        bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.f), std::round(pos.z), BTYPE_AIR);
+        if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
+            delta.x = 0;
+        }
 
-    bt1 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
-    if(bt1 == BTYPE_AIR && m_player.GetIsJumping() == false){
-        m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
-        delta.y -= FALLSPEED * m_player.GetFallTime();
-        m_player.SetIsFalling(true);
-    }
-    if(bt1 != BTYPE_AIR){
-        m_player.SetIsFalling(false);
-        m_player.SetFallTime(0);
-        if(!m_player.GetIsJumping())
-            m_player.SetMaxHeight();
-    }
+        bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
+        bt2 = BlockAt(std::round(pos.x), std::round(pos.y - 0.9f), std::round(pos.z + delta.z), BTYPE_AIR);
+        bt3 = BlockAt(std::round(pos.x), std::round(pos.y - 1.f), std::round(pos.z + delta.z), BTYPE_AIR);
+        if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
+        {
+            delta.z = 0;
+        }
 
-    bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);
-    bt2 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
-    if (bt1 != BTYPE_AIR && bt2 == BTYPE_AIR)
-    {
-        m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
-        delta.y -= FALLSPEED * m_player.GetFallTime();
-        m_player.SetIsFalling(true);
-        m_player.SetIsJumping(false);
+        bt1 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
+        if(bt1 == BTYPE_AIR && m_player.GetIsJumping() == false){
+            m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
+            delta.y -= FALLSPEED * m_player.GetFallTime();
+            m_player.SetIsFalling(true);
+        }
+        if(bt1 != BTYPE_AIR){
+            m_player.SetIsFalling(false);
+            m_player.SetFallTime(0);
+            if(!m_player.GetIsJumping())
+                m_player.SetMaxHeight();
+        }
+
+        bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);
+        bt2 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
+        if (bt1 != BTYPE_AIR && bt2 == BTYPE_AIR)
+        {
+            m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
+            delta.y -= FALLSPEED * m_player.GetFallTime();
+            m_player.SetIsFalling(true);
+            m_player.SetIsJumping(false);
+        }
     }
-    
 
     pos.y += delta.y;
     pos.x += delta.x;

@@ -51,6 +51,7 @@ private:
     Texture m_textureGrass;
     Texture m_textureFont;
     Texture m_textureCrosshair;
+    Texture m_textureArm;
 
     Shader m_shader01;
     

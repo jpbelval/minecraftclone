@@ -30,6 +30,7 @@ public:
     float GetFallTime() const;
     bool GetIsFalling() const;
     void SetIsFalling(bool isFalling);
+    bool GetIsFlying();
     bool GetIsJumping() const;
     void SetIsJumping(bool isJumping);
     void SetMaxHeight();
