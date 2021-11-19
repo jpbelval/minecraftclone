@@ -15,6 +15,7 @@ private:
     bool m_isJumping;
     float m_fallTime;
     float m_jumpTime;
+    float m_jumpHeight;
 
 public:
     Player(const Vector3f& position , float rotX = 0, float rotY = 0);
@@ -28,6 +29,9 @@ public:
     float GetFallTime() const;
     bool GetIsFalling() const;
     void SetIsFalling(bool isFalling);
+    bool GetIsJumping() const;
+    void SetIsJumping(bool isJumping);
+    void SetMaxHeight();
     void Jump();
     void CheckJump();
     void TurnLeftRight(float value);

@@ -41,24 +41,37 @@ void Player::TurnTopBottom(float value){
 }
 
 void Player::CheckJump(){
-    if (m_isJumping)
+    if (m_isJumping && m_isFalling == false)
     {
         m_Position.y += 0.1;
-        if(m_Position.y > 5){
+        if(m_Position.y > m_jumpHeight){
             m_isFalling = true;
             m_isJumping = false;
+            m_jumpHeight = 0;
         }
     }
     
 }
 
+void Player::SetIsJumping(bool isJumping){
+    m_isJumping = isJumping;
+}
+
+bool Player::GetIsJumping() const{
+    return m_isJumping;
+}
+
+void Player::SetMaxHeight(){
+    m_jumpHeight = m_Position.y + 1.5f;
+}
+
 void Player::Jump(){
-    if (m_isJumping == false && m_isFalling == false)
-    {
-        m_isJumping = true;
-    }
-    
-    
+//    if (m_isJumping == false && m_isFalling == false)
+//    {
+//        m_isJumping = true;
+//    }
+//    
+//    
 }
 
 void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime, float speed){

@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(5,3.5f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(5,3.2f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
 {
 }
@@ -183,6 +183,11 @@ void Engine::KeyPressEvent(unsigned char key)
             m_keyF3 = !m_keyF3;
             break;
         case 57:
+            if (m_player.GetIsJumping() != true)
+            {
+            m_player.SetMaxHeight();
+            m_player.SetIsJumping(true);
+            }
             m_player.Jump();
             break;
         case 38:
@@ -379,28 +384,41 @@ void Engine::CheckCollision(const float &elapsedTime)
     std::cout << delta.z << std::endl;
     bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
     bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 0.9f, std::round(pos.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 1.7f, std::round(pos.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y) - 1.f, std::round(pos.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
         delta.x = 0;
     }
 
     bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
     bt2 = BlockAt(std::round(pos.x), std::round(pos.y) - 0.9f, std::round(pos.z + delta.z), BTYPE_AIR);
-    bt3 = BlockAt(std::round(pos.x), std::round(pos.y) - 1.7f, std::round(pos.z + delta.z), BTYPE_AIR);
+    bt3 = BlockAt(std::round(pos.x), std::round(pos.y) - 1.f, std::round(pos.z + delta.z), BTYPE_AIR);
     if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
     {
         delta.z = 0;
     }
 
-    bt1 = BlockAt(pos.x, pos.y - 2.f, pos.z, BTYPE_AIR);
-    if(bt1 == BTYPE_AIR){
+    bt1 = BlockAt(pos.x, pos.y - 1.2f, pos.z, BTYPE_AIR);
+    if(bt1 == BTYPE_AIR && m_player.GetIsJumping() == false){
         m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
         delta.y -= FALLSPEED * m_player.GetFallTime();
         m_player.SetIsFalling(true);
     }
     if(bt1 != BTYPE_AIR){
         m_player.SetIsFalling(false);
+        m_player.SetFallTime(0);
     }
+
+    bt1 = BlockAt(pos.x, pos.y + 0.4f, pos.z, BTYPE_AIR);
+    bt2 = BlockAt(pos.x, pos.y - 1.2f, pos.z, BTYPE_AIR);
+    if (bt1 != BTYPE_AIR && bt2 == BTYPE_AIR)
+    {
+        m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
+        delta.y -= FALLSPEED * m_player.GetFallTime();
+        m_player.SetIsFalling(true);
+        m_player.SetIsJumping(false);
+    }
+    
+
     pos.y += delta.y;
     pos.x += delta.x;
     pos.z += delta.z;
