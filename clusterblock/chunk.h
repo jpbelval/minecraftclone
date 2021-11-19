@@ -24,7 +24,7 @@ class Chunk
     VertexBuffer m_vertexBuffer;
     bool m_isDirty;
     int m_PositionX;
-    int m_PosistionY;
+    int m_PositionY;
 };
 
 #endif // CHUNK_H__

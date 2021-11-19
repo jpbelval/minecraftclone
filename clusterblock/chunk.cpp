@@ -2,7 +2,7 @@
 #include <climits>
 #include <iostream>
 
-Chunk::Chunk(int x, int y) : m_PositionX(x), m_PosistionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true)
+Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true)
 {
     m_blocks.Reset(BTYPE_AIR);
     for (int x = 0; x < CHUNK_SIZE_X; ++x)
@@ -16,7 +16,7 @@ Chunk::Chunk(int x, int y) : m_PositionX(x), m_PosistionY(y), m_blocks(CHUNK_SIZ
                     SetBlock(x, y, z, BTYPE_AIR);
                 }
                 else{
-                    SetBlock(x, y, z, BTYPE_DIRT);
+                    SetBlock(x, y, z, BTYPE_GRASS);
                 }
             }
         }
@@ -132,7 +132,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
     int zInitial = z;
 
     x = x + m_PositionX;
-    z = z + m_PosistionY;
+    z = z + m_PositionY;
 
     if (GetBlock(xInitial, y + 1, zInitial) == BTYPE_AIR)
     {
@@ -142,7 +142,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
         vd[count++] = VertexBuffer::VertexData(x + .5f, y + .5f, z - .5f, 1.f, 1.f, 1.f, u+w, v+h);
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z - .5f, 1.f, 1.f, 1.f, u, v+h);
     }
-    if (x>0 && xInitial == CHUNK_SIZE_X || xInitial == 0 || GetBlock(x + 1, yInitial, zInitial) == BTYPE_AIR || GetBlock(x - 1, yInitial, zInitial) == BTYPE_AIR)
+    if (x >= 0 && (xInitial == CHUNK_SIZE_X || xInitial == 0 || GetBlock(x + 1, yInitial, zInitial) == BTYPE_AIR || GetBlock(x - 1, yInitial, zInitial) == BTYPE_AIR))
     {
         //Right
         vd[count++] = VertexBuffer::VertexData(x + .5f, y - .5f, z + .5f, .8f, .8f, .8f, u, v);
@@ -155,7 +155,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z + .5f, .8f, .8f, .8f, u+w, v+h);
         vd[count++] = VertexBuffer::VertexData(x - .5f, y + .5f, z - .5f, .8f, .8f, .8f, u, v+h);
     }
-    if (z>0 && zInitial == CHUNK_SIZE_Y || zInitial == 0 || GetBlock(xInitial, yInitial, z + 1) == BTYPE_AIR || GetBlock(xInitial, yInitial, z - 1) == BTYPE_AIR)
+    if (z >= 0 && (zInitial == CHUNK_SIZE_Z || zInitial == 0 || GetBlock(xInitial, yInitial, z + 1) == BTYPE_AIR || GetBlock(xInitial, yInitial, z - 1) == BTYPE_AIR))
     {
 
         //Back

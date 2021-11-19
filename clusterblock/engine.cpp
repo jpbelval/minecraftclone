@@ -6,7 +6,8 @@
 #include <iostream>
 
 Engine::Engine() : m_player(Vector3f(5,3.2f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
-                   Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"), m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_X)
+                   Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
+                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z)
 {
 }
 
@@ -37,7 +38,6 @@ void Engine::Init()
     }
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
-    // glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0f, (float)Width() / (float)Height(), 0.0001f, 1000.0f);
@@ -186,7 +186,7 @@ void Engine::KeyPressEvent(unsigned char key)
             m_player.Jump();
             break;
         case 38:
-            m_speed = 15;
+            m_player.SetSpeed(WALK_SPEED + 3.f);
             break;
         default:
             std::cout << "Unhandled key: " << (int)key << std::endl;
@@ -217,7 +217,7 @@ void Engine::KeyReleaseEvent(unsigned char key)
             m_keyD = false;
             break;
         case 38:
-            m_speed = 10;
+            m_player.SetSpeed(WALK_SPEED);
             break;
     }
 }
@@ -373,10 +373,6 @@ void Engine::CheckCollision(const float &elapsedTime)
     BlockType bt1, bt2, bt3;
     float playerDepth = 0.5f;
 
-    std::cout << "Nouveau x: " << delta.x << std::endl;
-    std::cout << delta.x << std::endl;
-    std::cout << delta.y << std::endl;
-    std::cout << delta.z << std::endl;
     bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
     bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 0.9f), std::round(pos.z), BTYPE_AIR);
     bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.f), std::round(pos.z), BTYPE_AIR);
@@ -401,7 +397,8 @@ void Engine::CheckCollision(const float &elapsedTime)
     if(bt1 != BTYPE_AIR){
         m_player.SetIsFalling(false);
         m_player.SetFallTime(0);
-        m_player.SetMaxHeight();
+        if(!m_player.GetIsJumping())
+            m_player.SetMaxHeight();
     }
 
     bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);
@@ -420,6 +417,5 @@ void Engine::CheckCollision(const float &elapsedTime)
     pos.z += delta.z;
 
     m_player.SetPosition(pos);
-    std::cout << "Position joueur" << m_player.GetPosition() << std::endl;
     
 }

@@ -61,7 +61,6 @@ private:
     bool m_keyA = false;
     bool m_keyS = false;
     bool m_keyD = false;
-    float m_speed = 10;
 
     TextureAtlas m_textureAtlas;
 

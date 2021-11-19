@@ -1,6 +1,8 @@
 #include "player.h"
 
-Player::Player(const Vector3f& position, float rotX, float rotY) : m_RotX(rotX), m_RotY(rotY), m_isFly(false), m_isFalling(false), m_fallTime(0.f), m_jumpTime(0.f)
+Player::Player(const Vector3f& position, float rotX, float rotY) : m_RotX(rotX), m_RotY(rotY), m_isFly(false), 
+                                                                    m_isFalling(false), m_fallTime(0.f), m_jumpTime(0.f),
+                                                                    m_speed(WALK_SPEED)
 {
     m_Position.x = position.x;
     m_Position.y = position.y;
@@ -57,12 +59,16 @@ void Player::SetIsJumping(bool isJumping){
     m_isJumping = isJumping;
 }
 
+void Player::SetSpeed(float speed){
+    m_speed = speed;
+}
+
 bool Player::GetIsJumping() const{
     return m_isJumping;
 }
 
 void Player::SetMaxHeight(){
-    m_jumpHeight = m_Position.y + 1.5f;
+    m_jumpHeight = m_Position.y + 1.2f;
 }
 
 void Player::Jump(){
@@ -72,55 +78,6 @@ void Player::Jump(){
    }
 
 
-}
-
-void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime, float speed){
-
-    const float vitesse = 10;
-
-    if(front){
-        float yrotrad;
-        yrotrad = (m_RotY / 180 * 3.141592654f);
-        
-        m_Position.x += float(sin(yrotrad)) * elapsedTime * speed;
-        
-        m_Position.z -= float(cos(yrotrad))* elapsedTime * speed;
-
-        if (m_isFly)
-        {
-            float xrotrad;
-            xrotrad = (m_RotX / 180 * 3.141592654f);
-            m_Position.y -= float(sin(xrotrad));
-        }
-    
-    }
-    if(back){
-        float yrotrad;
-        yrotrad = (m_RotY / 180 * 3.141592654f);        
-        m_Position.x -= float(sin(yrotrad))* elapsedTime * speed;
-        m_Position.z += float(cos(yrotrad))* elapsedTime * speed;
-
-        if (m_isFly)
-        {
-            float xrotrad;
-            xrotrad = (m_RotX / 180 * 3.141592654f);
-            m_Position.y += float(sin(xrotrad))* elapsedTime * speed;
-        }
-    }
-
-    if(right){
-        float yrotrad;
-        yrotrad = (m_RotY / 180 * 3.141592654f);
-        m_Position.x += float(cos(yrotrad)) * elapsedTime * speed;
-        m_Position.z += float(sin(yrotrad)) * elapsedTime * speed;
-    }
-    if(left){
-        float yrotrad;
-        yrotrad = (m_RotY / 180 * 3.141592654f);
-        m_Position.x -= float(cos(yrotrad)) * elapsedTime * speed;
-        m_Position.z -= float(sin(yrotrad)) * elapsedTime * speed;
-    }
-    //std::cout << GetPosition().x << std::endl;
 }
 
 Vector3f Player::GetPosition() const{
@@ -148,11 +105,11 @@ void Player::ApplyTransformation(Transformation& transformation) const{
 
 Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, float elapsedTime)
 {
-    float vitesse = 8;
+    float vitesse = m_speed;
     if(m_isFalling){
         vitesse = vitesse / 2;
     }
-    
+
     Vector3f positionSimu(0,0,0);
 
     if (front)
