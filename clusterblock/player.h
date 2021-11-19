@@ -35,7 +35,7 @@ public:
     void SetMaxHeight();
     void SetSpeed(float speed);
     void Jump();
-    void CheckJump();
+    void CheckJump(float elaspedTime);
     void TurnLeftRight(float value);
     void TurnTopBottom(float value);
     void Move(bool front , bool back , bool left , bool right , float elapsedTime, float speed);

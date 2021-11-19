@@ -124,7 +124,7 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    m_player.CheckJump();
+    m_player.CheckJump(elapsedTime);
     CheckCollision(elapsedTime);
     
     //Player

@@ -42,14 +42,19 @@ void Player::TurnTopBottom(float value){
         m_RotX = -90;
 }
 
-void Player::CheckJump(){
+void Player::CheckJump(float elapsedTime){
     if (m_isJumping && m_isFalling == false)
     {
-        m_Position.y += 0.1;
+        float transfY = 0.f;
+        std::cout << m_jumpHeight << std::endl;
+        m_jumpTime += elapsedTime;
+        transfY = .23f - 1.f * m_jumpTime;
+        m_Position.y += transfY;
+        std::cout << "Diff y" <<(2.f *  (1.f - elapsedTime) * (1.f - elapsedTime) - 1.f * elapsedTime) << std::endl;
         if(m_Position.y > m_jumpHeight){
             m_isFalling = true;
             m_isJumping = false;
-            //m_jumpHeight = 0;
+            m_jumpTime = 0;
         }
     }
     
@@ -68,12 +73,13 @@ bool Player::GetIsJumping() const{
 }
 
 void Player::SetMaxHeight(){
-    m_jumpHeight = m_Position.y + 1.2f;
+    m_jumpHeight = m_Position.y + 1.3f;
 }
 
 void Player::Jump(){
    if (m_isJumping == false && m_isFalling == false)
    {
+       m_jumpTime = 0;
        m_isJumping = true;
    }
 
