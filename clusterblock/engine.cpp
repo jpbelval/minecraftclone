@@ -147,11 +147,11 @@ void Engine::Render(float elapsedTime)
     }    
     Shader::Disable();
 
-    if(m_wireframe)
+    DrawHud(elapsedTime);
+    if(m_wireframe){
         glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
-        DrawHud(elapsedTime);
-    if(m_wireframe)
         glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
+    }
 }
 
 void Engine::KeyPressEvent(unsigned char key)
@@ -298,7 +298,9 @@ void Engine::DrawHud(const float &elaspedTime){
     glEnd();
 
     m_textureArm.Bind();
-    static const int armSize = 200;
+    static const int armSize = Width()/4;
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glLoadIdentity ();
     glTranslated(Width() - (armSize + 10), 0, 0);
     glBegin(GL_QUADS);
