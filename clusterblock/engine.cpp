@@ -183,11 +183,6 @@ void Engine::KeyPressEvent(unsigned char key)
             m_keyF3 = !m_keyF3;
             break;
         case 57:
-            if (m_player.GetIsJumping() != true)
-            {
-            m_player.SetMaxHeight();
-            m_player.SetIsJumping(true);
-            }
             m_player.Jump();
             break;
         case 38:
@@ -406,6 +401,7 @@ void Engine::CheckCollision(const float &elapsedTime)
     if(bt1 != BTYPE_AIR){
         m_player.SetIsFalling(false);
         m_player.SetFallTime(0);
+        m_player.SetMaxHeight();
     }
 
     bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);

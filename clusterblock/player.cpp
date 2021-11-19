@@ -47,7 +47,7 @@ void Player::CheckJump(){
         if(m_Position.y > m_jumpHeight){
             m_isFalling = true;
             m_isJumping = false;
-            m_jumpHeight = 0;
+            //m_jumpHeight = 0;
         }
     }
     
@@ -66,12 +66,12 @@ void Player::SetMaxHeight(){
 }
 
 void Player::Jump(){
-//    if (m_isJumping == false && m_isFalling == false)
-//    {
-//        m_isJumping = true;
-//    }
-//    
-//    
+   if (m_isJumping == false && m_isFalling == false)
+   {
+       m_isJumping = true;
+   }
+
+
 }
 
 void Player::Move(bool front , bool back , bool left , bool right, float elapsedTime, float speed){
