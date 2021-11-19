@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Engine::Engine() : m_player(Vector3f(5,3.2f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(5,4.7f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
                     m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z)
 {
@@ -125,7 +125,6 @@ void Engine::Render(float elapsedTime)
     // Transformations initiales
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    m_player.CheckJump(elapsedTime);
     CheckCollision(elapsedTime);
     
     //Player
@@ -403,39 +402,40 @@ void Engine::CheckCollision(const float &elapsedTime)
         
         bt1 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y), std::round(pos.z), BTYPE_AIR);
         bt2 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 0.9f), std::round(pos.z), BTYPE_AIR);
-        bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.f), std::round(pos.z), BTYPE_AIR);
+        bt3 = BlockAt(std::round(pos.x + delta.x), std::round(pos.y - 1.2f), std::round(pos.z), BTYPE_AIR);
         if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR){
             delta.x = 0;
         }
 
         bt1 = BlockAt(std::round(pos.x), std::round(pos.y), std::round(pos.z + delta.z), BTYPE_AIR);
         bt2 = BlockAt(std::round(pos.x), std::round(pos.y - 0.9f), std::round(pos.z + delta.z), BTYPE_AIR);
-        bt3 = BlockAt(std::round(pos.x), std::round(pos.y - 1.f), std::round(pos.z + delta.z), BTYPE_AIR);
+        bt3 = BlockAt(std::round(pos.x), std::round(pos.y - 1.2f), std::round(pos.z + delta.z), BTYPE_AIR);
         if(bt1 != BTYPE_AIR || bt2 != BTYPE_AIR || bt3 != BTYPE_AIR)
         {
             delta.z = 0;
         }
 
         bt1 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
-        if(bt1 == BTYPE_AIR && m_player.GetIsJumping() == false){
-            m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
-            delta.y -= FALLSPEED * m_player.GetFallTime();
+        if(bt1 != BTYPE_AIR){
+            if (delta.y < 0)
+            {
+                delta.y = 0;
+                m_player.SetIsFalling(false);
+                m_player.SetFallTime(0);
+                m_player.SetIsJumping(false);
+            }
+        }
+        else
+        {
             m_player.SetIsFalling(true);
         }
-        if(bt1 != BTYPE_AIR){
-            m_player.SetIsFalling(false);
-            m_player.SetFallTime(0);
-            if(!m_player.GetIsJumping())
-                m_player.SetMaxHeight();
-        }
+        
 
-        bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + 0.4f, std::round(pos.z + delta.z), BTYPE_AIR);
+        bt1 = BlockAt(std::round(pos.x + delta.x), pos.y + delta.y, std::round(pos.z + delta.z), BTYPE_AIR);
         bt2 = BlockAt(std::round(pos.x + delta.x), pos.y - 1.2f, std::round(pos.z + delta.z), BTYPE_AIR);
         if (bt1 != BTYPE_AIR && bt2 == BTYPE_AIR)
         {
-            m_player.SetFallTime(m_player.GetFallTime() + elapsedTime);
-            delta.y -= FALLSPEED * m_player.GetFallTime();
-            m_player.SetIsFalling(true);
+            delta.y = 0;
             m_player.SetIsJumping(false);
         }
     }

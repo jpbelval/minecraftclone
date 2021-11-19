@@ -42,19 +42,7 @@ void Player::TurnTopBottom(float value){
         m_RotX = -90;
 }
 
-void Player::CheckJump(float elapsedTime){
-    if (m_isJumping && m_isFalling == false)
-    {
-        float transfY = 0.f;
-        m_jumpTime += elapsedTime;
-        transfY = .23f - 1.f * m_jumpTime;
-        m_Position.y += transfY;
-        if(m_Position.y > m_jumpHeight){
-            m_isFalling = true;
-            m_isJumping = false;
-            m_jumpTime = 0;
-        }
-    }
+void Player::CheckGravity(float elapsedTime){
     
 }
 
@@ -77,7 +65,6 @@ void Player::SetMaxHeight(){
 void Player::Jump(){
    if (m_isJumping == false && m_isFalling == false)
    {
-       m_jumpTime = 0;
        m_isJumping = true;
    }
 
@@ -86,6 +73,10 @@ void Player::Jump(){
 
 Vector3f Player::GetPosition() const{
     return m_Position;
+}
+
+bool Player::GetIsFlying(){
+    return m_isFly;
 }
 
 void Player::SetPosition(Vector3f pos)
@@ -111,7 +102,7 @@ Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, f
 {
     float vitesse = m_speed;
     if(m_isFalling){
-        vitesse = vitesse / 2;
+        vitesse = vitesse -2.f;
     }
 
     Vector3f positionSimu(0,0,0);
@@ -129,7 +120,7 @@ Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, f
         {
             float xrotrad;
             xrotrad = (m_RotX / 180 * 3.141592654f);
-            m_Position.y -= float(sin(xrotrad));
+            positionSimu.y -= float(sin(xrotrad));
         }
     }
     if (back)
@@ -142,7 +133,7 @@ Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, f
         {
             float xrotrad;
             xrotrad = (m_RotX / 180 * 3.141592654f);
-            m_Position.y += float(sin(xrotrad))* elapsedTime * vitesse;
+            positionSimu.y += float(sin(xrotrad))* elapsedTime * vitesse;
         }
     }
     if (left)
@@ -159,5 +150,16 @@ Vector3f Player::SimulateMove(bool front , bool back , bool left , bool right, f
         positionSimu.x += float(cos(yrotrad)) * elapsedTime * vitesse;
         positionSimu.z +=  float(sin(yrotrad)) * elapsedTime * vitesse;
     }
+    
+    if (m_isJumping)
+        positionSimu.y += .15f;
+
+    //Gravity
+    if (!m_isFly)
+    {
+        m_fallTime += elapsedTime;    
+        positionSimu.y -= m_fallTime * 0.5f;
+    }
+
     return positionSimu;
 }
