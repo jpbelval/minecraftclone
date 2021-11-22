@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <enet/enet.h>
 
 #ifdef _WIN32
 #include <windows.h>
