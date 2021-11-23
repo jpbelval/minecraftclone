@@ -13,6 +13,9 @@ Engine::Engine() : m_player(Vector3f(5,4.7f,5.f)), m_textureAtlas(4), Terre(BTYP
 
 Engine::~Engine()
 {
+    if(client != null){
+        enet_host_destroy(client);
+    }
 }
 
 void Engine::Init()
@@ -448,4 +451,14 @@ void Engine::CheckCollision(const float &elapsedTime)
 
     m_player.SetPosition(pos);
     
+}
+
+void Engine::CreateClientCon(){
+    client = enet_host_create(NULL, 1, 2, 0, 0);
+    if (client == NULL)
+    {
+        fprintf (stderr, 
+                "An error occurred while trying to create an ENet client host.\n");
+        exit (EXIT_FAILURE);
+    }
 }

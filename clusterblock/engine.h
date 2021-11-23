@@ -42,6 +42,7 @@ public:
 
 private:
     bool LoadTexture(Texture& texture, const std::string& filename, bool stopOnError = true);
+    void CreateClientCon();
 
 private:
     bool m_wireframe = false;
@@ -56,6 +57,8 @@ private:
     Shader m_shader01;
     
     Player m_player;
+
+    ENetHost* client;
 
     bool m_keyF3 = true; //Show stats
     bool m_keyW = false;
