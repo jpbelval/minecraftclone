@@ -86,6 +86,7 @@ void Chunk::RemoveBlock(int x, int y, int z)
 void Chunk::SetBlock(int x, int y, int z, BlockType type)
 {
     m_blocks.Set(x, y, z, type);
+    m_isDirty = true;
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z)
