@@ -4,24 +4,29 @@
 
 Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true)
 {
+    Perlin perlin (16,8,1,95);
+
     m_blocks.Reset(BTYPE_AIR);
+    BlockType bt = NULL;
+
     for (int x = 0; x < CHUNK_SIZE_X; ++x)
     {
         for (int z = 0; z < CHUNK_SIZE_Z; ++z)
-        {
-            for (int y = 0; y < CHUNK_SIZE_Y; ++y)
+        {   
+            float y = perlin.Get((float)(m_PositionX + x) / 2000.f, (float)(m_PositionY + z) / 2000.f) * 25 + 26;
+            if (y < 26)
             {
-                if (y > 1)
-                {
-                    SetBlock(x, y, z, BTYPE_AIR);
-                }
-                else{
-                    SetBlock(x, y, z, BTYPE_GRASS);
-                }
+                bt = BTYPE_PLANK;
             }
+            else
+            {
+                bt = BTYPE_GRASS;
+            }
+            
+            
+            SetBlock(x,y,z, bt);
         }
     }
-    GenererStructure();
 
 }
 
@@ -104,7 +109,7 @@ void Chunk::Update(BlockInfo* blockInfo[])
         {
             for (int z = 0; z < CHUNK_SIZE_Z; ++z)
             {
-                for (int y = 0; y < 16; ++y)
+                for (int y = 0; y < CHUNK_SIZE_Y; ++y)
                 {
                     if (count > USHRT_MAX)
                         break;

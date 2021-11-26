@@ -2,8 +2,9 @@
 #include <iostream>
 #include "engine.h"
 
-int main()
+int main(int argc)
 {
+    
     Engine engine;
     engine.SetMaxFps(60);
     engine.Start("clusterblock", 800, 600, false);

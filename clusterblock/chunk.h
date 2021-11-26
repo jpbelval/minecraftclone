@@ -3,6 +3,7 @@
 #include "array3d.h"
 #include "vertexbuffer.h"
 #include "blockinfo.h"
+#include "perlin.h"
 
 class Chunk
 {
