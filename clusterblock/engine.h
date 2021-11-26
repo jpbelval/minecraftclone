@@ -49,6 +49,7 @@ public:
 
 private:
     bool LoadTexture(Texture& texture, const std::string& filename, bool stopOnError = true);
+    void CreateClientCon();
 
 private:
     bool m_wireframe = false;

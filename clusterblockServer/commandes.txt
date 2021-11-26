@@ -1,0 +1,2 @@
+g++ -lenet server.cpp -o build/a.out -fpermissive
+g++ -lncurses -lenet -lpthread chat_screen.cpp main.cpp -fpermissive -o ./build/a.out

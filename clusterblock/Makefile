@@ -4,7 +4,7 @@ BINFILE = ./build/clusterblock
 CC = g++
 
 COMPILER_FLAGS = -I/usr/X11R6/include -I/usr/local/include -I./external/noise/include -I./external/enet-1.3.1/include -finline-functions -std=c++11
-LINKER_FLAGS = -lm -L/usr/X11R6/lib -L/usr/local/lib -lGL -lGLU -lpthread -lsfml-graphics -lsfml-window -lsfml-system -lsndfile -lopenal -lsfml-audio -lXrandr -lIL -lILU -lX11 -ldl -lGLEW
+LINKER_FLAGS = -lm -L/usr/X11R6/lib -L/usr/local/lib -lGL -lGLU -lpthread -lsfml-graphics -lsfml-window -lsfml-system -lsndfile -lopenal -lsfml-audio -lXrandr -lIL -lILU -lX11 -ldl -lGLEW -lenet
 
 # Release:
 #CFLAGS = -O3 -fomit-frame-pointer -ffast-math -w $(COMPILER_FLAGS)

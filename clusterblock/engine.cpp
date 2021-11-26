@@ -603,6 +603,5 @@ void Engine::GetBlocAtCursor(){
         else if(EqualWithEpsilon<float>((float)posY, (float)m_currentBlock.y + 1.f, epsilon))
             m_currentFaceNormal.y = 1;
     }
-
-    //std::cout << m_currentFaceNormal.x << ", " << m_currentFaceNormal.y << ", "  << m_currentFaceNormal.z << std::endl;
 }
+
