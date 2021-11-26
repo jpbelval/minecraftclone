@@ -58,8 +58,6 @@ private:
     
     Player m_player;
 
-    ENetHost* client;
-
     bool m_keyF3 = true; //Show stats
     bool m_keyW = false;
     bool m_keyA = false;
