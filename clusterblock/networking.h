@@ -2,24 +2,28 @@
 #define NETWORKING_H__
 
 #include <enet/enet.h>
+#include <iostream>
 
 class Networking
 {
     private:
     int m_id;
+    ENetHost* m_client;
+    ENetAddress m_address;
+    ENetPeer* m_hostPeer;
 
     public:
-    Networking(); //Se connecte dans le constructeur
+    Networking(std::string ipAddress, int port); //Se connecte dans le constructeur
 
     ~Networking(); //Se déconnecte dans le destructeur
 
-    int GetId() {return m_id;}
+    int GetId();
 
-    void SendPacket(ENetPeer* peer, char* data);
+    void SendPacket(char* data);
 
     void ParseData(char* data);
 
-    void ReceiveData(ENetHost* host); //Devra être call a chaque frame
+    void ReceiveData(); //Devra être call a chaque frame
 
 };
 
