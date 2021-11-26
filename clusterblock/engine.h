@@ -27,6 +27,7 @@ public:
     virtual void MouseMoveEvent(int x, int y);
     virtual void MousePressEvent(const MOUSE_BUTTON &button, int x, int y);
     virtual void MouseReleaseEvent(const MOUSE_BUTTON &button, int x, int y);
+    virtual void GetBlocAtCursor();
 
     template <class T>
     Chunk* ChunkAt(T x, T y, T z) const;
@@ -36,6 +37,12 @@ public:
 
     template <class T>
     BlockType BlockAt(T x, T y, T z, BlockType defaultBlockType) const;
+
+    template <class T>
+    static bool EqualWithEpsilon(const T& v1, const T& v2, T epsilon = T(0.0001));
+
+    template <class T>
+    static bool InRangeWithEpsilon(const T& v, const T& vinf, const T& vsup, T epsilon = T(0.0001));
 
     virtual void CheckCollision(const float& elapsedTime);
 
@@ -54,8 +61,11 @@ private:
     Texture m_textureArm;
 
     Shader m_shader01;
-    
+
     Player m_player;
+
+    Vector3f m_currentBlock;
+    Vector3f m_currentFaceNormal;
 
     bool m_keyF3 = true; //Show stats
     bool m_keyW = false;
@@ -79,5 +89,18 @@ private:
     float v;
 
 };
+
+template <class T>
+bool Engine::EqualWithEpsilon(const T& v1, const T& v2, T epsilon)
+    {
+    return (fabs(v2 - v1) < epsilon);
+    }
+
+template <class T>
+bool Engine::InRangeWithEpsilon(const T& v, const T& vinf, const T& vsup, T epsilon)
+    {
+    return (v >= vinf - epsilon && v <= vsup + epsilon);
+    }
+
 
 #endif // ENGINE_H__
