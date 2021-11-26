@@ -85,6 +85,7 @@ Chunk::~Chunk()
 void Chunk::RemoveBlock(int x, int y, int z)
 {
     m_blocks.Set(x, y, z, BTYPE_AIR);
+    m_isDirty = true;
 }
 
 void Chunk::SetBlock(int x, int y, int z, BlockType type)
