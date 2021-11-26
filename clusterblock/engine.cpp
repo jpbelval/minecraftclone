@@ -450,12 +450,3 @@ void Engine::CheckCollision(const float &elapsedTime)
     
 }
 
-void Engine::CreateClientCon(){
-    client = enet_host_create(NULL, 1, 2, 0, 0);
-    if (client == NULL)
-    {
-        fprintf (stderr, 
-                "An error occurred while trying to create an ENet client host.\n");
-        exit (EXIT_FAILURE);
-    }
-}
