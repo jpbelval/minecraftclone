@@ -1,6 +1,7 @@
 #ifndef ENGINE_H__
 #define ENGINE_H__
 #include "define.h"
+#include "networking.h"
 #include "openglcontext.h"
 #include "texture.h"
 #include "player.h"
@@ -9,6 +10,7 @@
 #include "textureatlas.h"
 #include "blockinfo.h"
 #include "array2d.h"
+#include "networking.h"
 
 class Engine : public OpenglContext
 {
@@ -67,6 +69,8 @@ private:
 
     Vector3f m_currentBlock;
     Vector3f m_currentFaceNormal;
+
+    Networking m_network;
 
     bool m_keyF3 = true; //Show stats
     bool m_keyW = false;

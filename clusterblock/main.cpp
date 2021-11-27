@@ -2,7 +2,7 @@
 #include <iostream>
 #include "engine.h"
 
-int main(int argc)
+int main()
 {
     
     Engine engine;

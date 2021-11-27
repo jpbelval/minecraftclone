@@ -56,6 +56,26 @@ Networking::Networking(std::string ipAddress, int port)
 
 }
 
+Networking::~Networking()
+{
+    ENetEvent event;
+
+    enet_peer_disconnect(m_hostPeer, 0);
+
+    while(enet_host_service(m_client, &event, 3000) > 0)
+    {
+        switch(event.type)
+        {
+            case ENET_EVENT_TYPE_RECEIVE:
+                enet_packet_destroy(event.packet);
+                break;
+            case ENET_EVENT_TYPE_DISCONNECT:
+                puts("DISCONNECTION SUCCEEDED.");
+                break;
+        }
+    }
+}
+
 int Networking::GetId()
 {
     return m_id;

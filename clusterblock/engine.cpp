@@ -2,13 +2,17 @@
 #include "transformation.h"
 #include "player.h"
 #include "chunk.h"
+#include "networking.h"
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <iostream>
+#include <new>
+#include <string>
 
 Engine::Engine() : m_player(Vector3f(5,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
-                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z)
+                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network("127.0.0.1", 7777)
 {
 }
 
@@ -18,7 +22,6 @@ Engine::~Engine()
 
 void Engine::Init()
 {    
-    
 
 
     for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
@@ -120,6 +123,14 @@ void Engine::Render(float elapsedTime)
     static float gameTime = elapsedTime;
 
     gameTime += elapsedTime;
+
+    m_network.ReceiveData();
+
+    // Envoyer position player
+    std::string msgPosition = std::to_string(m_player.GetPosition().x) + "x" + std::to_string(m_player.GetPosition().y) + "y" + std::to_string(m_player.GetPosition().z) + "z";
+    char messageData[80] = "1|";
+    strcat(messageData, msgPosition.c_str());
+    m_network.SendPacket(messageData);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
