@@ -10,7 +10,7 @@
 #include <new>
 #include <string>
 
-Engine::Engine() : m_player(Vector3f(5,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+Engine::Engine() : m_player(Vector3f(5.f,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
                     m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network("127.0.0.1", 7777)
 {
@@ -144,6 +144,13 @@ void Engine::Render(float elapsedTime)
     m_player.ApplyTransformation(t);
     t.Use();
 
+    for (int i = 0; i < m_network.GetPlayerNumber(); i++)
+    {
+        RenderOnlinePlayers(gameTime);
+    }
+    
+    //FIN
+
     m_textureAtlas.Bind();
 
     m_shader01.Use();
@@ -165,6 +172,122 @@ void Engine::Render(float elapsedTime)
         glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
     }
     GetBlocAtCursor();
+}
+
+void Engine::RenderOnlinePlayers(float gameTime, PlayerData player)
+{
+
+    Transformation t;
+    //Other players
+    m_textureCube.Bind();
+    t.ApplyTranslation(0,0,-5.f);
+    t.ApplyTranslation(sin(gameTime), 0, -2);
+    t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
+    t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
+    t.Use();
+
+//===============================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(1, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, 0.5f, 0.5f);
+    glEnd();
+//================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, -1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(-1, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 1, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(-0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(0.5f, 0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(0.5f, 0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(-0.5f, 0.5f, -0.5f);
+    
+    glEnd();
+
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, -1, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(-0.5f, -0.5f, 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(-0.5f, -0.5f, -0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(0.5f, -0.5f, -0.5f);
+    
+    glEnd();
 }
 
 void Engine::KeyPressEvent(unsigned char key)

@@ -96,6 +96,12 @@ void Networking::ReceiveData()
         
         }
     }
+
+    for (auto const& x : m_playersDict)
+    {
+        std::cout <<  "ID: " << std::to_string(x.first) << " ----" << std::to_string(x.second->GetPosition().x) << "x" << std::to_string(x.second->GetPosition().y) << "y" << std::to_string(x.second->GetPosition().x) << "z" << std::endl;
+    }
+
 }
 
 void Networking::ParseData(char* data)
@@ -103,16 +109,22 @@ void Networking::ParseData(char* data)
     int dataType;
     int id;
     sscanf(data, "%d|%d", &dataType, &id);
+    if (dataType != 1)
+    {
+        std::cout << "Paquet reçu: " << data << std::endl;
+    }
+    
+
 
     switch (dataType)
     {
         case 1: //Reception de position
         {
             if (id != m_id) {
-                int x;
-                int y;
-                int z;
-                sscanf(data, "%*d|%*d|%dx%dy%dz", &x, &y, &z);
+                float x;
+                float y;
+                float z;
+                sscanf(data, "%*d|%*d|%fx%fy%fz", &x, &y, &z);
                 m_playersDict[id]->SetPosition(Vector3f(x,y,z));
             }
             break;
@@ -133,6 +145,7 @@ void Networking::ParseData(char* data)
             if(id != m_id)
             {
                 m_playersDict[id] = new PlayerData(id);
+                std::cout << "Nouveau joueur connecté: " << id << std::endl;
             }
             break;
         }
@@ -158,4 +171,9 @@ Vector3f Networking::GetBrokenBlockPosition()
 void Networking::SetBrokenBlockPosition(Vector3f position)
 {
     m_brokenBlockPosition = position;
+}
+
+int Networking::GetPlayerNumber()
+{
+    return m_playersDict.size();
 }

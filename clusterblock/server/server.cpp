@@ -38,6 +38,7 @@ Server::~Server() {}
 
 void Server::BroadcastPacket(const char *data)
 {
+    std::cout << "Broadcasted message: " << data << std::endl;
     ENetPacket* packet = enet_packet_create(data, strlen(data) + 1, ENET_PACKET_FLAG_RELIABLE);
     enet_host_broadcast(m_server, 0, packet);
 }
@@ -49,10 +50,10 @@ void Server::SendPacket(ENetPeer* peer, const char* data){
 
 void Server::ParseData(int id, char *data)
 {
-    std::cout << "Phrase: " << data << std::endl;
 
     int dataType;
 
+    // std::cout << "Phrase: " << data << std::endl;
     sscanf(data, "%d|", &dataType);
 
     switch(dataType)
@@ -62,7 +63,9 @@ void Server::ParseData(int id, char *data)
             char msg[80];
             sscanf(data, "%*d|%[^\n]", &msg);
 
-            BroadcastPacket(msg);
+            std::string msgWithHeader = std::to_string(dataType) + "|" + std::to_string(id) + "|" + msg;
+
+            BroadcastPacket(msgWithHeader.c_str());
         }
         break;
         case 2:
@@ -87,7 +90,7 @@ void Server::StartLoop()
     int new_player_id = 0;
     while(true)
     {
-        while(enet_host_service(m_server, &event, 1000) > 0)
+        while(enet_host_service(m_server, &event, 5000) > 0)
         {
             switch(event.type)
             {
@@ -97,16 +100,17 @@ void Server::StartLoop()
                         event.peer -> address.host,
                         event.peer -> address.port);
 
+
+                        new_player_id++;
+                        m_playersDict[new_player_id] = new PlayerData(new_player_id);
+                        event.peer->data = m_playersDict[new_player_id];
+
                         for(auto const& x : m_playersDict)
                         {
                             char send_data[1024] = {'\0'};
                             sprintf(send_data, "3|%d", x.first);
                             BroadcastPacket(send_data);
                         }
-
-                        new_player_id++;
-                        m_playersDict[new_player_id] = new PlayerData(new_player_id);
-                        event.peer->data = m_playersDict[new_player_id];
 
                         char data_to_send[126] = {'\0'};
                         sprintf(data_to_send, "4|%d", new_player_id);

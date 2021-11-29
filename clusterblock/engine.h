@@ -48,6 +48,8 @@ public:
 
     virtual void CheckCollision(const float& elapsedTime);
 
+    void RenderOnlinePlayers(const float gameTime, const PlayerData player);
+
 
 private:
     bool LoadTexture(Texture& texture, const std::string& filename, bool stopOnError = true);

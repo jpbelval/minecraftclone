@@ -1,6 +1,6 @@
 #include "playerdata.h"
 
-PlayerData::PlayerData(int id) : m_id(id)
+PlayerData::PlayerData(int id) : m_id(id), m_Position(Vector3f(0,0,0))
 {
 
 }

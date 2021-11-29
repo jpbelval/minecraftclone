@@ -34,6 +34,8 @@ class Networking
 
     void ReceiveData(); //Devra être call a chaque frame
 
+    int GetPlayerNumber();
+
 };
 
 #endif
