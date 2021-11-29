@@ -265,36 +265,16 @@ void Engine::MousePressEvent(const MOUSE_BUTTON& button, int x, int y)
     case MOUSE_BUTTON_RIGHT:
         if (m_currentBlock.x >= 0 && m_currentBlock.y >= 0 && m_currentBlock.z >= 0)
         {
-            int bx = (int)m_currentBlock.x % CHUNK_SIZE_X;
-            int by = (int)m_currentBlock.y % CHUNK_SIZE_Y;
-            int bz = (int)m_currentBlock.z % CHUNK_SIZE_Z;
-
-            std::cout << "x: " << m_currentFaceNormal.x << "y: " << m_currentFaceNormal.y << "z: " << m_currentFaceNormal.z << std::endl;
-
-            if (m_currentFaceNormal.x == 1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx + 1, by, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.x == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx - 1, by, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.y == 1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by + 1, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.y == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by - 1, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.z == 1 )
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by, bz + 1, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.z == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by, bz - 1, BTYPE_DIRT);
-            }
+            //Pour le ChunkAt
+            int cx = (int)(m_currentBlock.x + m_currentFaceNormal.x);
+            int cy = (int)(m_currentBlock.y + m_currentFaceNormal.y);
+            int cz = (int)(m_currentBlock.z + m_currentFaceNormal.z);
+            //Pour le SetBlock
+            int bx = (int)cx % CHUNK_SIZE_X;
+            int by = (int)cy % CHUNK_SIZE_Y;
+            int bz = (int)cz % CHUNK_SIZE_Z;
+            
+            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_DIRT);
         }
         break;
     default:
@@ -587,7 +567,7 @@ void Engine::GetBlocAtCursor(){
     {
         // Find on which face of the bloc we got an hit
         m_currentFaceNormal.Zero();
-        const float epsilon = 0.03f;
+        const float epsilon = 0.04f;
 
         // Front et back:
         if(EqualWithEpsilon<float>((float)posZ, (float)m_currentBlock.z, epsilon))
