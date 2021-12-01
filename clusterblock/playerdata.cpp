@@ -15,7 +15,7 @@ int PlayerData::GetId()
     return m_id;
 }
 
-Vector3f PlayerData::GetPosition()
+Vector3f PlayerData::GetPosition() const
 {
     return m_Position;
 }

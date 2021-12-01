@@ -177,3 +177,8 @@ int Networking::GetPlayerNumber()
 {
     return m_playersDict.size();
 }
+
+std::map<int, PlayerData*> Networking::GetPlayers()
+{
+    return m_playersDict;
+}

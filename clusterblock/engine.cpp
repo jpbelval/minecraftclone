@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
+#include <map>
 #include <new>
 #include <string>
 
@@ -82,6 +83,7 @@ void Engine::LoadResource()
         exit (1);
     }
 
+    LoadTexture(m_textureCube, TEXTURE_PATH "textureFloor.png");
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
     LoadTexture(m_textureArm, TEXTURE_PATH "arm.png");
@@ -144,9 +146,15 @@ void Engine::Render(float elapsedTime)
     m_player.ApplyTransformation(t);
     t.Use();
 
-    for (int i = 0; i < m_network.GetPlayerNumber(); i++)
-    {
-        RenderOnlinePlayers(gameTime);
+    std::map<int, PlayerData*> players = m_network.GetPlayers();
+
+    std::cout << players.size() << std::endl;
+
+    if (players.size() > 1) {
+        for (int i = 1; i < players.size(); i++)
+        {
+            RenderOnlinePlayers(t, gameTime, players[i]);
+        }
     }
     
     //FIN
@@ -174,13 +182,12 @@ void Engine::Render(float elapsedTime)
     GetBlocAtCursor();
 }
 
-void Engine::RenderOnlinePlayers(float gameTime, PlayerData player)
+void Engine::RenderOnlinePlayers(Transformation &t, float gameTime, const PlayerData* player)
 {
-
-    Transformation t;
+    Vector3f positionJoueur = player->GetPosition();
     //Other players
     m_textureCube.Bind();
-    t.ApplyTranslation(0,0,-5.f);
+    t.ApplyTranslation(positionJoueur.x,positionJoueur.y,positionJoueur.z);
     t.ApplyTranslation(sin(gameTime), 0, -2);
     t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
     t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);

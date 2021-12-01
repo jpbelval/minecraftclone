@@ -36,6 +36,8 @@ class Networking
 
     int GetPlayerNumber();
 
+    std::map<int, PlayerData*> GetPlayers();
+
 };
 
 #endif

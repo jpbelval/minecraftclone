@@ -15,7 +15,7 @@ class PlayerData
         void SetId(int id);
         int GetId();
         void SetPosition(Vector3f position);
-        Vector3f GetPosition();
+        Vector3f GetPosition() const;
 };
 
 #endif

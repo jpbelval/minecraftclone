@@ -48,7 +48,7 @@ public:
 
     virtual void CheckCollision(const float& elapsedTime);
 
-    void RenderOnlinePlayers(const float gameTime, const PlayerData player);
+    void RenderOnlinePlayers(Transformation &t, const float gameTime, const PlayerData* player);
 
 
 private:
