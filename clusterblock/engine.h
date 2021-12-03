@@ -50,6 +50,10 @@ public:
 
     void RenderOnlinePlayers(const float gameTime, const PlayerData* player);
 
+    void SetIpAdress(std::string ipAdress);
+
+
+
 
 private:
     bool LoadTexture(Texture& texture, const std::string& filename, bool stopOnError = true);

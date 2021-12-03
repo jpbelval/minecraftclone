@@ -28,5 +28,6 @@ enum BLOCK_TYPE {BTYPE_AIR, BTYPE_DIRT, BTYPE_GRASS, BTYPE_PLANK, BTYPE_COBBLE, 
 
 #define TEXTURE_PATH        "../clusterblock/media/textures/"
 #define VIEW_DISTANCE       128
+#define DEFAULT_PORT        7777
 
 #endif // DEFINE_H__

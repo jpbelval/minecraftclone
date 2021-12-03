@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 
-Networking::Networking(std::string ipAddress, int port)
+Networking::Networking()
+{
+}
+
+void Networking::Connect(std::string ipAddress, int port)
 {
     try
     {
@@ -53,7 +57,6 @@ Networking::Networking(std::string ipAddress, int port)
     {
         std::cerr << errorMessage << '\n';
     }
-
 }
 
 Networking::~Networking()

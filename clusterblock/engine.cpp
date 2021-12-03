@@ -13,12 +13,17 @@
 
 Engine::Engine() : m_player(Vector3f(5.f,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
-                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network("127.0.0.1", 7777)
+                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network()
 {
 }
 
 Engine::~Engine()
 {
+}
+
+void Engine::SetIpAdress(std::string ipAdress)
+{
+    m_network.Connect(ipAdress, DEFAULT_PORT);
 }
 
 void Engine::Init()
@@ -83,7 +88,7 @@ void Engine::LoadResource()
         exit (1);
     }
 
-    LoadTexture(m_textureCube, TEXTURE_PATH "joe.png");
+    LoadTexture(m_textureCube, TEXTURE_PATH "joes.png");
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
     LoadTexture(m_textureArm, TEXTURE_PATH "arm.png");

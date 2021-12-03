@@ -18,9 +18,11 @@ class Networking
     Vector3f m_brokenBlockPosition;
 
     public:
-    Networking(std::string ipAddress, int port); //Se connecte dans le constructeur
+    Networking(); //Se connecte dans le constructeur
 
     ~Networking(); //Se déconnecte dans le destructeur
+
+    void Connect(std::string ipAddress, int port);
 
     int GetId();
 
