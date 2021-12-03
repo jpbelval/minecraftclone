@@ -83,7 +83,7 @@ void Engine::LoadResource()
         exit (1);
     }
 
-    LoadTexture(m_textureCube, TEXTURE_PATH "textureFloor.png");
+    LoadTexture(m_textureCube, TEXTURE_PATH "joe.png");
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
     LoadTexture(m_textureArm, TEXTURE_PATH "arm.png");
@@ -145,17 +145,16 @@ void Engine::Render(float elapsedTime)
     Transformation t;
     m_player.ApplyTransformation(t);
     t.Use();
-
     std::map<int, PlayerData*> players = m_network.GetPlayers();
-
     std::cout << players.size() << std::endl;
-
-    if (players.size() > 1) {
-        for (int i = 1; i < players.size(); i++)
+    if (players.size() > 1)
+    {
+        for (std::map<int, PlayerData*>::iterator it = players.begin(); it != players.end(); ++it)
         {
-            RenderOnlinePlayers(t, gameTime, players[i]);
+            RenderOnlinePlayers(gameTime, it->second);
         }
     }
+    
     
     //FIN
 
@@ -182,64 +181,59 @@ void Engine::Render(float elapsedTime)
     GetBlocAtCursor();
 }
 
-void Engine::RenderOnlinePlayers(Transformation &t, float gameTime, const PlayerData* player)
+void Engine::RenderOnlinePlayers(float gameTime, const PlayerData* player)
 {
-    Vector3f positionJoueur = player->GetPosition();
+    std::cout << "Render player" << std::endl;
     //Other players
     m_textureCube.Bind();
-    t.ApplyTranslation(positionJoueur.x,positionJoueur.y,positionJoueur.z);
-    t.ApplyTranslation(sin(gameTime), 0, -2);
-    t.ApplyRotation(gameTime * 100.f, 0, 0, 1.f);
-    t.ApplyRotation(gameTime * 200.f, 0, 1.f, 0);
-    t.Use();
 
 //===============================================================
     glBegin(GL_QUADS);
     glNormal3f(0, 0, 1);
 
     glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
     glEnd();
 //=================================================================
     glBegin(GL_QUADS);
     glNormal3f(1, 0, 0);
 
     glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
     glEnd();
 //================================================================
     glBegin(GL_QUADS);
     glNormal3f(0, 0, -1);
 
     glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
     
     glEnd();
 //=================================================================
@@ -247,16 +241,16 @@ void Engine::RenderOnlinePlayers(Transformation &t, float gameTime, const Player
     glNormal3f(-1, 0, 0);
 
     glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
     
     glEnd();
 
@@ -265,16 +259,16 @@ void Engine::RenderOnlinePlayers(Transformation &t, float gameTime, const Player
     glNormal3f(0, 1, 0);
 
     glTexCoord2f(0, 0);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(0.5f, 0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(-0.5f, 0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
     
     glEnd();
 
@@ -283,16 +277,16 @@ void Engine::RenderOnlinePlayers(Transformation &t, float gameTime, const Player
     glNormal3f(0, -1, 0);
 
     glTexCoord2f(0, 0);
-    glVertex3f(0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 0);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
 
     glTexCoord2f(1, 1);
-    glVertex3f(-0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
 
     glTexCoord2f(0, 1);
-    glVertex3f(0.5f, -0.5f, -0.5f);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
     
     glEnd();
 }
