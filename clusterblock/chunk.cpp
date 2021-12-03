@@ -178,16 +178,7 @@ void Chunk::EcrireFichier (){
     std::string s2 = std::to_string(m_PositionY);
     std::string s = "Chunk/" + s1 + "," + s2;   
     std::ofstream Fichier(s, std::fstream::binary);
-    char data[CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z];
-    int i = 0;
-    for(int x = 0; x < CHUNK_SIZE_X; ++x){
-        for(int y = 0; y < CHUNK_SIZE_Y; ++y){
-            for(int z = 0; z < CHUNK_SIZE_Z; ++z){
-                data[i] = m_blocks.Get(x, y, z);
-                i++;
-            }
-        }
-    }   
+      
     Fichier.write((char*)m_blocks.GetPointeur(), CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z);
     //Fichier << std::endl;
     Fichier.close();
