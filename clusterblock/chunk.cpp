@@ -16,6 +16,8 @@ Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE
     {
         char data[CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z];
         Fichier.read(data, sizeof(data));
+        m_blocks.SetData((BlockType*)data);
+        std::cout << "1" << std::endl;
     }
     else
     {
@@ -51,7 +53,7 @@ Chunk::~Chunk()
 {
     if (m_isModified){
         std::cout << "Modo  Chunk deleted" << std::endl;
-        FichierTexte();
+        EcrireFichier();
     }
 }
 
@@ -171,7 +173,7 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
     
 }
 
-void Chunk::FichierTexte (){
+void Chunk::EcrireFichier (){
     std::string s1 = std::to_string(m_PositionX);
     std::string s2 = std::to_string(m_PositionY);
     std::string s = "Chunk/" + s1 + "," + s2;   
@@ -186,7 +188,7 @@ void Chunk::FichierTexte (){
             }
         }
     }   
-    Fichier.write((char*)data, sizeof(data));
+    Fichier.write((char*)m_blocks.GetPointeur(), CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z);
     //Fichier << std::endl;
     Fichier.close();
 }

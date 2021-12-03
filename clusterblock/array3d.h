@@ -2,6 +2,7 @@
 #define BLOCKARRAY3D_H__
 
 #include "define.h"
+#include <iostream>
 #include <cassert>
 
 template<class T>
@@ -13,8 +14,9 @@ class Array3d
         Array3d(const Array3d& array);
 
         void Set(int x, int y, int z, T type);
+        void SetData(T* Fichier);
         T Get(int x, int y, int z) const;
-
+        T* GetPointeur() const;
         void Reset(T type);
 
     private:
@@ -51,9 +53,22 @@ void Array3d<T>::Set(int x, int y, int z, T type)
 }
 
 template<class T>
+void Array3d<T>::SetData(T* Fichier)
+{
+    for(int i = 0; i < m_x * m_y * m_z; ++i){
+        m_data[i] = Fichier[i];
+    }
+}
+
+template<class T>
 T Array3d<T>::Get(int x, int y, int z) const
 {
     return m_data[To1dIndex(x, y, z)];
+}
+
+template<class T>
+T* Array3d<T>::GetPointeur() const{
+    return m_data;
 }
 
 template<class T>
