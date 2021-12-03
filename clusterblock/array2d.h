@@ -33,6 +33,7 @@ Array2d<T>::Array2d(int x, int y) : m_x(x), m_y(y)
 template<class T>
 Array2d<T>::~Array2d()
 {
+    
     delete [] m_data;
 }
 

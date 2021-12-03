@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 
+
 Engine::Engine() : m_player(Vector3f(5,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
                     m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z)
@@ -113,6 +114,14 @@ void Engine::LoadResource()
 
 void Engine::UnloadResource()
 {
+    for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
+    {
+        for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
+        {
+            delete m_chunkArray2d.Get(i, j);
+        }
+        
+    }
 }
 
 void Engine::Render(float elapsedTime)
@@ -274,7 +283,7 @@ void Engine::MousePressEvent(const MOUSE_BUTTON& button, int x, int y)
             int by = (int)cy % CHUNK_SIZE_Y;
             int bz = (int)cz % CHUNK_SIZE_Z;
             
-            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_DIRT);
+            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_DIRT, true);
         }
         break;
     default:

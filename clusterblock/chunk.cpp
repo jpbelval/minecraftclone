@@ -1,102 +1,73 @@
 #include "chunk.h"
 #include <climits>
 #include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <string>
 
-Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true)
+Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE_X, CHUNK_SIZE_Y, CHUNK_SIZE_Z), m_isDirty(true), m_isModified(false)
 {
-    Perlin perlin (16,8,1,95);
-
-    m_blocks.Reset(BTYPE_AIR);
-    BlockType bt = NULL;
-
-    for (int x = 0; x < CHUNK_SIZE_X; ++x)
+    std::string s1 = std::to_string(m_PositionX);
+    std::string s2 = std::to_string(m_PositionY);
+    std::string s = "Chunk/" + s1 + "," + s2;
+    
+    std::ifstream Fichier(s, std::fstream::binary);
+    if (Fichier.is_open())
     {
-        for (int z = 0; z < CHUNK_SIZE_Z; ++z)
-        {   
-            float y = perlin.Get((float)(m_PositionX + x) / 2000.f, (float)(m_PositionY + z) / 2000.f) * 25 + 26;
-            if (y < 26)
-            {
-                bt = BTYPE_PLANK;
-            }
-            else
-            {
-                bt = BTYPE_GRASS;
-            }
-            
-            SetBlock(x,y,z, bt);
-
-            for (float i = 0; i < y - 1; ++i)
-            {
-                SetBlock(x,i,z, BTYPE_COBBLE);
-            }
-            
-        }
+        char data[CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z];
+        Fichier.read(data, sizeof(data));
     }
+    else
+    {
+        Perlin perlin (16,8,1,95);
+        m_blocks.Reset(BTYPE_AIR);
+        BlockType bt = NULL;
+        for (int x = 0; x < CHUNK_SIZE_X; ++x)
+        {
+            for (int z = 0; z < CHUNK_SIZE_Z; ++z)
+            {   
+                float y = perlin.Get((float)(m_PositionX + x) / 2000.f, (float)(m_PositionY + z) / 2000.f) * 25 + 26;
+                if (y < 26)
+                {
+                    bt = BTYPE_PLANK;
+                }
+                else
+                {
+                    bt = BTYPE_GRASS;
+                }
+                SetBlock(x,y,z, bt);
+                for (float i = 0; i < y - 1; ++i)
+                {
+                    SetBlock(x,i,z, BTYPE_COBBLE);
+                }
+            }
+        }  
+    }
+    
 
 }
-
-void Chunk::GenererStructure(){
-    //Arche
-    SetBlock(9,2,2, BTYPE_COBBLE);
-    SetBlock(9,3,2, BTYPE_COBBLE);
-    SetBlock(9,4,2, BTYPE_COBBLE);
-    SetBlock(9,4,3, BTYPE_COBBLE);
-    SetBlock(9,4,4, BTYPE_COBBLE);
-    SetBlock(9,3,4, BTYPE_COBBLE);
-    SetBlock(9,2,4, BTYPE_COBBLE);
-
-    //Escalier
-    SetBlock(5,2,7, BTYPE_COBBLE);
-    SetBlock(6,3,7, BTYPE_COBBLE);
-    SetBlock(7,4,7, BTYPE_COBBLE);
-    SetBlock(8,5,7, BTYPE_COBBLE);
-
-    //Mur X = le meme
-    SetBlock(6,2,11, BTYPE_COBBLE);
-    SetBlock(6,2,12, BTYPE_COBBLE);
-    SetBlock(6,2,13, BTYPE_COBBLE);
-    SetBlock(6,2,14, BTYPE_COBBLE);
-    SetBlock(6,3,14, BTYPE_COBBLE);
-    SetBlock(6,3,11, BTYPE_COBBLE);
-    SetBlock(6,3,12, BTYPE_COBBLE);
-    SetBlock(6,3,13, BTYPE_COBBLE);
-    SetBlock(6,3,14, BTYPE_COBBLE);
-    SetBlock(6,4,11, BTYPE_COBBLE);
-    SetBlock(6,4,12, BTYPE_COBBLE);
-    SetBlock(6,4,13, BTYPE_COBBLE);
-    SetBlock(6,4,14, BTYPE_COBBLE);
-
-    //Mur Z = le meme
-    SetBlock(11,2,14, BTYPE_PLANK);
-    SetBlock(12,2,14, BTYPE_PLANK);
-    SetBlock(13,2,14, BTYPE_PLANK);
-    SetBlock(14,2,14, BTYPE_PLANK);
-    SetBlock(14,3,14, BTYPE_PLANK);
-    SetBlock(11,3,14, BTYPE_PLANK);
-    SetBlock(12,3,14, BTYPE_PLANK);
-    SetBlock(13,3,14, BTYPE_PLANK);
-    SetBlock(14,3,14, BTYPE_PLANK);
-    SetBlock(11,4,14, BTYPE_PLANK);
-    SetBlock(12,4,14, BTYPE_PLANK);
-    SetBlock(13,4,14, BTYPE_PLANK);
-    SetBlock(14,4,14, BTYPE_PLANK);
-}
-
 
 Chunk::~Chunk()
 {
+    if (m_isModified){
+        std::cout << "Modo  Chunk deleted" << std::endl;
+        FichierTexte();
+    }
 }
 
 void Chunk::RemoveBlock(int x, int y, int z)
 {
     m_blocks.Set(x, y, z, BTYPE_AIR);
     m_isDirty = true;
+    m_isModified = true;
 }
 
-void Chunk::SetBlock(int x, int y, int z, BlockType type)
+void Chunk::SetBlock(int x, int y, int z, BlockType type, bool placeJoueur)
 {
     m_blocks.Set(x, y, z, type);
     m_isDirty = true;
+    if(placeJoueur)
+        m_isModified = true;
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z)
@@ -199,6 +170,28 @@ void Chunk::AddBlockToMesh(VertexBuffer::VertexData *vd, int &count, BlockType b
     }
     
 }
+
+void Chunk::FichierTexte (){
+    std::string s1 = std::to_string(m_PositionX);
+    std::string s2 = std::to_string(m_PositionY);
+    std::string s = "Chunk/" + s1 + "," + s2;   
+    std::ofstream Fichier(s, std::fstream::binary);
+    char data[CHUNK_SIZE_X*CHUNK_SIZE_Y*CHUNK_SIZE_Z];
+    int i = 0;
+    for(int x = 0; x < CHUNK_SIZE_X; ++x){
+        for(int y = 0; y < CHUNK_SIZE_Y; ++y){
+            for(int z = 0; z < CHUNK_SIZE_Z; ++z){
+                data[i] = m_blocks.Get(x, y, z);
+                i++;
+            }
+        }
+    }   
+    Fichier.write((char*)data, sizeof(data));
+    //Fichier << std::endl;
+    Fichier.close();
+}
+
+
 
 void Chunk::Render() const
 {
