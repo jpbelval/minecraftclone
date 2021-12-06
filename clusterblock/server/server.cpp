@@ -70,9 +70,6 @@ void Server::ParseData(int id, char *data)
         break;
         case 2:
         {
-            // char username[80];
-            // sscanf(data, "2|%[^\n]", &username);
-            // std::cout << "USERNAME: " << username << "\n";
 
             // char send_data[1024] = {'\0'};
             // sprintf(send_data, "2|%d|%s", id, username);
@@ -139,8 +136,9 @@ void Server::StartLoop()
                             event.peer -> address.port);
 
                     char send_data[126] = {'\0'};
-                    sprintf(send_data, "4|%d", static_cast<PlayerData*>(event.peer->data)->GetId());
+                    sprintf(send_data, "5|%d", static_cast<PlayerData*>(event.peer->data)->GetId());
                     BroadcastPacket(send_data);
+                    m_playersDict.erase(static_cast<PlayerData*>(event.peer->data)->GetId());
 
                     event.peer->data = NULL;
                     break;

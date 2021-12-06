@@ -157,6 +157,14 @@ void Networking::ParseData(char* data)
             m_id = id;
             break;
         }
+        case 5:
+        {
+            if (id != m_id)
+            {
+                m_playersDict.erase(id);
+            }
+            
+        }
     }
 }
 
