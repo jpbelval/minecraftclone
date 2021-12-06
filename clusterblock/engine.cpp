@@ -104,6 +104,11 @@ void Engine::LoadResource()
     m_BlockInfo[BTYPE_GRASS] = new BlockInfo(BTYPE_GRASS, "Gazon");
     m_BlockInfo[BTYPE_GRASS] ->SetWHUV(w,h,u,v);
     m_BlockInfo[BTYPE_GRASS] ->SetDurability(10);
+    TextureAtlas :: TextureIndex texSable = m_textureAtlas.AddTexture(TEXTURE_PATH "Sable.jpg");
+    m_textureAtlas.TextureIndexToCoord(texSable, u, v, w, h);
+    m_BlockInfo[BTYPE_SABLE] = new BlockInfo(BTYPE_SABLE, "Sable");
+    m_BlockInfo[BTYPE_SABLE] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_SABLE] ->SetDurability(10);
     
     if(! m_textureAtlas.Generate (128, false))
     {
@@ -283,7 +288,7 @@ void Engine::MousePressEvent(const MOUSE_BUTTON& button, int x, int y)
             int by = (int)cy % CHUNK_SIZE_Y;
             int bz = (int)cz % CHUNK_SIZE_Z;
             
-            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_DIRT, true);
+            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_PLANK, true);
         }
         break;
     default:

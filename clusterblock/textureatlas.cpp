@@ -10,8 +10,8 @@
 
 TextureAtlas::TextureAtlas(unsigned int nbTexture) : m_isValid(false), m_currentTextureIndex(0)
 {
-    if(nbTexture < 4)
-        nbTexture = 4;
+    if(nbTexture < BTYPE_LAST)
+        nbTexture = BTYPE_LAST;
 
     // Arrondir sur la puissance de 2 superieure
     m_nbTexturePerSide = (int)sqrt((float)nbTexture);

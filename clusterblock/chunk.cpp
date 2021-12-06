@@ -31,7 +31,7 @@ Chunk::Chunk(int x, int y) : m_PositionX(x), m_PositionY(y), m_blocks(CHUNK_SIZE
                 float y = perlin.Get((float)(m_PositionX + x) / 2000.f, (float)(m_PositionY + z) / 2000.f) * 25 + 26;
                 if (y < 26)
                 {
-                    bt = BTYPE_PLANK;
+                    bt = BTYPE_SABLE;
                 }
                 else
                 {
