@@ -2,9 +2,10 @@
 #include "playerdata.h"
 #include "vector3.h"
 #include <cstdio>
-#include <enet/enet.h>
 #include <stdio.h>
 #include <string.h>
+#include <string>
+#include <enet/enet.h>
 
 Networking::Networking()
 {

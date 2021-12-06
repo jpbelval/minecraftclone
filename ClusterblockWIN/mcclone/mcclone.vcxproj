@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\clusterblock\blockinfo.cpp" />
+    <ClCompile Include="..\..\clusterblock\chunk.cpp" />
+    <ClCompile Include="..\..\clusterblock\engine.cpp" />
+    <ClCompile Include="..\..\clusterblock\main.cpp" />
+    <ClCompile Include="..\..\clusterblock\networking.cpp" />
+    <ClCompile Include="..\..\clusterblock\openglcontext.cpp" />
+    <ClCompile Include="..\..\clusterblock\perlin.cpp" />
+    <ClCompile Include="..\..\clusterblock\player.cpp" />
+    <ClCompile Include="..\..\clusterblock\playerdata.cpp" />
+    <ClCompile Include="..\..\clusterblock\shader.cpp" />
+    <ClCompile Include="..\..\clusterblock\texture.cpp" />
+    <ClCompile Include="..\..\clusterblock\textureatlas.cpp" />
+    <ClCompile Include="..\..\clusterblock\tool.cpp" />
+    <ClCompile Include="..\..\clusterblock\transformation.cpp" />
+    <ClCompile Include="..\..\clusterblock\vertexbuffer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\clusterblock\array2d.h" />
+    <ClInclude Include="..\..\clusterblock\array3d.h" />
+    <ClInclude Include="..\..\clusterblock\blockinfo.h" />
+    <ClInclude Include="..\..\clusterblock\chunk.h" />
+    <ClInclude Include="..\..\clusterblock\define.h" />
+    <ClInclude Include="..\..\clusterblock\engine.h" />
+    <ClInclude Include="..\..\clusterblock\matrix4.h" />
+    <ClInclude Include="..\..\clusterblock\networking.h" />
+    <ClInclude Include="..\..\clusterblock\openglcontext.h" />
+    <ClInclude Include="..\..\clusterblock\perlin.h" />
+    <ClInclude Include="..\..\clusterblock\player.h" />
+    <ClInclude Include="..\..\clusterblock\playerdata.h" />
+    <ClInclude Include="..\..\clusterblock\shader.h" />
+    <ClInclude Include="..\..\clusterblock\texture.h" />
+    <ClInclude Include="..\..\clusterblock\textureatlas.h" />
+    <ClInclude Include="..\..\clusterblock\tool.h" />
+    <ClInclude Include="..\..\clusterblock\transformation.h" />
+    <ClInclude Include="..\..\clusterblock\vector3.h" />
+    <ClInclude Include="..\..\clusterblock\vertexbuffer.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A21FD938-1FEA-4687-AB86-0EABAC30877B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>mcclone</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>clusterblock</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>external\devil178\include;external\sfml23\include;external\glew170\include;external\enet1317\include;$(IncludePath)</IncludePath>
+    <LibraryPath>external\devil178\lib;external\sfml23\lib;external\glew170\lib;external\enet1317\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>external\sfml23\include;external\devil178\include;external\glew170\include;$(IncludePath)</IncludePath>
+    <LibraryPath>external\sfml23\lib;external\devil178\lib;external\glew170\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-main-d.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;GlU32.Lib;OpenGL32.Lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;enet.lib;ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>sfml-main.lib;sfml-system.lib;sfml-window.lib;sfml-graphics.lib;GlU32.Lib;OpenGL32.Lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

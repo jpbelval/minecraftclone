@@ -1,0 +1,57 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (mcclone.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  blockinfo.cpp
+  chunk.cpp
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\chunk.cpp(26,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\chunk.cpp(30,28): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  engine.cpp
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(139,5): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(385,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(386,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(708,44): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(709,44): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\engine.cpp(710,44): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  main.cpp
+  networking.cpp
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(143,54): warning C4244: 'argument': conversion from 'int' to 'const T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(143,52): warning C4244: 'argument': conversion from 'int' to 'const T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(143,50): warning C4244: 'argument': conversion from 'int' to 'const T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(115,5): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(131,17): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\networking.cpp(142,17): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  openglcontext.cpp
+  perlin.cpp
+  player.cpp
+  playerdata.cpp
+  shader.cpp
+  texture.cpp
+  textureatlas.cpp
+  tool.cpp
+C:\Users\jpbel\Documents\GitHub\ClusterBlock\clusterblock\tool.cpp(14,22): warning C4244: 'initializing': conversion from 'std::streamoff' to 'unsigned int', possible loss of data
+  transformation.cpp
+  vertexbuffer.cpp
+  Generating Code...
+  mcclone.vcxproj -> C:\Users\jpbel\Documents\GitHub\ClusterBlock\ClusterblockWIN\Debug\clusterblock.exe
