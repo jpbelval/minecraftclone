@@ -11,7 +11,8 @@
 #include <new>
 #include <string>
 
-Engine::Engine() : m_player(Vector3f(5.f,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
+
+Engine::Engine() : m_player(Vector3f(5,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
                     m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network()
 {
@@ -113,6 +114,11 @@ void Engine::LoadResource()
     m_BlockInfo[BTYPE_GRASS] = new BlockInfo(BTYPE_GRASS, "Gazon");
     m_BlockInfo[BTYPE_GRASS] ->SetWHUV(w,h,u,v);
     m_BlockInfo[BTYPE_GRASS] ->SetDurability(10);
+    TextureAtlas :: TextureIndex texSable = m_textureAtlas.AddTexture(TEXTURE_PATH "Sable.jpg");
+    m_textureAtlas.TextureIndexToCoord(texSable, u, v, w, h);
+    m_BlockInfo[BTYPE_SABLE] = new BlockInfo(BTYPE_SABLE, "Sable");
+    m_BlockInfo[BTYPE_SABLE] ->SetWHUV(w,h,u,v);
+    m_BlockInfo[BTYPE_SABLE] ->SetDurability(10);
     
     if(! m_textureAtlas.Generate (128, false))
     {
@@ -123,6 +129,14 @@ void Engine::LoadResource()
 
 void Engine::UnloadResource()
 {
+    for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
+    {
+        for (int j = 0; j < m_chunkArray2d.GetCol(); j++)
+        {
+            delete m_chunkArray2d.Get(i, j);
+        }
+        
+    }
 }
 
 void Engine::Render(float elapsedTime)
@@ -405,36 +419,16 @@ void Engine::MousePressEvent(const MOUSE_BUTTON& button, int x, int y)
     case MOUSE_BUTTON_RIGHT:
         if (m_currentBlock.x >= 0 && m_currentBlock.y >= 0 && m_currentBlock.z >= 0)
         {
-            int bx = (int)m_currentBlock.x % CHUNK_SIZE_X;
-            int by = (int)m_currentBlock.y % CHUNK_SIZE_Y;
-            int bz = (int)m_currentBlock.z % CHUNK_SIZE_Z;
-
-            std::cout << "x: " << m_currentFaceNormal.x << "y: " << m_currentFaceNormal.y << "z: " << m_currentFaceNormal.z << std::endl;
-
-            if (m_currentFaceNormal.x == 1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx + 1, by, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.x == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx - 1, by, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.y == 1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by + 1, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.y == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by - 1, bz, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.z == 1 )
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by, bz + 1, BTYPE_DIRT);
-            }
-            else if (m_currentFaceNormal.z == -1)
-            {
-                ChunkAt(m_currentBlock.x, m_currentBlock.y, m_currentBlock.z)->SetBlock(bx, by, bz - 1, BTYPE_DIRT);
-            }
+            //Pour le ChunkAt
+            int cx = (int)(m_currentBlock.x + m_currentFaceNormal.x);
+            int cy = (int)(m_currentBlock.y + m_currentFaceNormal.y);
+            int cz = (int)(m_currentBlock.z + m_currentFaceNormal.z);
+            //Pour le SetBlock
+            int bx = (int)cx % CHUNK_SIZE_X;
+            int by = (int)cy % CHUNK_SIZE_Y;
+            int bz = (int)cz % CHUNK_SIZE_Z;
+            
+            ChunkAt(cx, cy, cz)->SetBlock(bx, by, bz, BTYPE_PLANK, true);
         }
         break;
     default:
@@ -727,7 +721,7 @@ void Engine::GetBlocAtCursor(){
     {
         // Find on which face of the bloc we got an hit
         m_currentFaceNormal.Zero();
-        const float epsilon = 0.03f;
+        const float epsilon = 0.04f;
 
         // Front et back:
         if(EqualWithEpsilon<float>((float)posZ, (float)m_currentBlock.z, epsilon))

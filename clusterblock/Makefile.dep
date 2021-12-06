@@ -1,12 +1,20 @@
 engine.o: engine.cpp engine.h define.h openglcontext.h texture.h player.h \
- vector3.h transformation.h matrix4.h
+ vector3.h transformation.h matrix4.h shader.h chunk.h array3d.h \
+ vertexbuffer.h blockinfo.h perlin.h array2d.h textureatlas.h
 openglcontext.o: openglcontext.cpp openglcontext.h define.h
-texture.o: texture.cpp texture.h define.h
+vertexbuffer.o: vertexbuffer.cpp vertexbuffer.h define.h
+perlin.o: perlin.cpp perlin.h
 player.o: player.cpp player.h vector3.h transformation.h matrix4.h \
  define.h
+chunk.o: chunk.cpp chunk.h array3d.h define.h vertexbuffer.h blockinfo.h \
+ perlin.h array2d.h
+texture.o: texture.cpp texture.h define.h
+tool.o: tool.cpp tool.h define.h
+blockinfo.o: blockinfo.cpp blockinfo.h define.h
+shader.o: shader.cpp shader.h define.h tool.h
 transformation.o: transformation.cpp transformation.h matrix4.h define.h \
  vector3.h
-chunk.o: chunk.cpp chunk.h array3d.h define.h
-blockinfo.o: blockinfo.cpp blockinfo.h define.h
 main.o: main.cpp engine.h define.h openglcontext.h texture.h player.h \
- vector3.h transformation.h matrix4.h
+ vector3.h transformation.h matrix4.h shader.h chunk.h array3d.h \
+ vertexbuffer.h blockinfo.h perlin.h array2d.h textureatlas.h
+textureatlas.o: textureatlas.cpp textureatlas.h define.h tool.h
