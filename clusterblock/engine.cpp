@@ -2,14 +2,19 @@
 #include "transformation.h"
 #include "player.h"
 #include "chunk.h"
+#include "networking.h"
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <iostream>
+#include <map>
+#include <new>
+#include <string>
 
 
 Engine::Engine() : m_player(Vector3f(5,30.f,5.f)), m_textureAtlas(4), Terre(BTYPE_DIRT, "terre"), 
                    Planche(BTYPE_PLANK, "planche"), Gazon(BTYPE_GRASS, "gazon"), Cobble(BTYPE_COBBLE, "roche"),
-                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z)
+                    m_chunkArray2d(VIEW_DISTANCE * 2 / CHUNK_SIZE_X, VIEW_DISTANCE * 2 / CHUNK_SIZE_Z), m_network()
 {
 }
 
@@ -17,9 +22,13 @@ Engine::~Engine()
 {
 }
 
+void Engine::SetIpAdress(std::string ipAdress)
+{
+    m_network.Connect(ipAdress, DEFAULT_PORT);
+}
+
 void Engine::Init()
 {    
-    
 
 
     for (int i = 0; i < m_chunkArray2d.GetRow(); i++)
@@ -80,6 +89,7 @@ void Engine::LoadResource()
         exit (1);
     }
 
+    LoadTexture(m_textureCube, TEXTURE_PATH "joes.png");
     LoadTexture(m_textureFont, TEXTURE_PATH "font.bmp");
     LoadTexture(m_textureCrosshair, TEXTURE_PATH "cross.bmp");
     LoadTexture(m_textureArm, TEXTURE_PATH "arm.png");
@@ -135,6 +145,14 @@ void Engine::Render(float elapsedTime)
 
     gameTime += elapsedTime;
 
+    m_network.ReceiveData();
+
+    // Envoyer position player
+    std::string msgPosition = std::to_string(m_player.GetPosition().x) + "x" + std::to_string(m_player.GetPosition().y) + "y" + std::to_string(m_player.GetPosition().z) + "z";
+    char messageData[80] = "1|";
+    strcat(messageData, msgPosition.c_str());
+    m_network.SendPacket(messageData);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Transformations initiales
@@ -146,6 +164,18 @@ void Engine::Render(float elapsedTime)
     Transformation t;
     m_player.ApplyTransformation(t);
     t.Use();
+    std::map<int, PlayerData*> players = m_network.GetPlayers();
+    std::cout << players.size() << std::endl;
+    if (players.size() > 1)
+    {
+        for (std::map<int, PlayerData*>::iterator it = players.begin(); it != players.end(); ++it)
+        {
+            RenderOnlinePlayers(gameTime, it->second);
+        }
+    }
+    
+    
+    //FIN
 
     m_textureAtlas.Bind();
 
@@ -168,6 +198,116 @@ void Engine::Render(float elapsedTime)
         glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
     }
     GetBlocAtCursor();
+}
+
+void Engine::RenderOnlinePlayers(float gameTime, const PlayerData* player)
+{
+    std::cout << "Render player" << std::endl;
+    //Other players
+    m_textureCube.Bind();
+
+//===============================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(1, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+    glEnd();
+//================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, -1);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+    
+    glEnd();
+//=================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(-1, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+    
+    glEnd();
+
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, 1, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y + 0.5f, player->GetPosition().z - 0.5f);
+    
+    glEnd();
+
+    //===================================================================
+    glBegin(GL_QUADS);
+    glNormal3f(0, -1, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 0);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z + 0.5f);
+
+    glTexCoord2f(1, 1);
+    glVertex3f(player->GetPosition().x - 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+
+    glTexCoord2f(0, 1);
+    glVertex3f(player->GetPosition().x + 0.5f, player->GetPosition().y - 0.5f, player->GetPosition().z - 0.5f);
+    
+    glEnd();
 }
 
 void Engine::KeyPressEvent(unsigned char key)
